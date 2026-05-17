@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hujayra Biologiyasi. Gen Terapiyasi — Work Sheet</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Libre+Baskerville:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f6f4ee;--surface:#fff;--ink:#171510;--ink2:#47433b;--ink3:#8c877e;
+  --accent:#1a5c38;--accent-light:#edfbf3;
+  --green:#166534;--gl:#f0fdf4;
+  --amber:#92400e;--al:#fffbeb;
+  --red:#991b1b;--rl:#fef2f2;
+  --purple:#5b21b6;--pl:#f5f3ff;
+  --blue:#1e40af;--bl:#eff6ff;
+  --teal:#0f766e;--tl:#f0fdfa;
+  --border:#ddd8ce;--border2:#c5bfb3;
+}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.6;padding:2rem 1rem 5rem}
+.page{max-width:800px;margin:0 auto}
+
+/* ── HEADER ── */
+.header{border-bottom:3px solid var(--ink);padding-bottom:1.25rem;margin-bottom:1.5rem}
+.subject-tag{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);margin-bottom:5px;display:block}
+.header h1{font-family:'Libre Baskerville',serif;font-size:21px;font-weight:700;line-height:1.25;margin-bottom:.75rem}
+.meta-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:.75rem}
+.meta-box{border:1px solid var(--border2);border-radius:6px;padding:7px 11px}
+.meta-box label{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);display:block;margin-bottom:3px;font-family:'IBM Plex Mono',monospace}
+.meta-box .line{border-bottom:1px solid var(--border2);height:18px}
+.meta-input {
+  border: none;
+  border-bottom: 1.5px solid var(--border2);
+  width: 100%;
+  outline: none;
+  background: transparent;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px;
+  padding: 2px 0 4px;
+  color: var(--ink);
+  transition: border-color 0.15s;
+}
+.meta-input:focus { border-color: var(--accent); }
+.meta-input:read-only { color: var(--ink2); border-bottom: 1.5px solid transparent; }
+
+/* ── BANNER ── */
+.banner{background:var(--ink);color:#fff;border-radius:8px;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;font-size:13px;flex-wrap:wrap;gap:8px}
+.banner strong{font-family:'IBM Plex Mono',monospace;font-size:14px}
+
+/* ── TOPIC DIVIDER ── */
+.topic-divider{display:flex;align-items:center;gap:10px;margin:2rem 0 1.2rem;cursor:pointer;user-select:none}
+.topic-num{font-family:'IBM Plex Mono',monospace;font-size:10px;background:var(--ink);color:#fff;padding:3px 9px;border-radius:4px;letter-spacing:.06em;white-space:nowrap}
+.topic-title{font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;border-bottom:1.5px dotted var(--border2);flex:1;padding-bottom:3px}
+
+/* ── SECTION ── */
+.section{margin-bottom:2rem}
+.section-header{display:flex;align-items:center;gap:9px;margin-bottom:.9rem;padding-bottom:7px;border-bottom:1.5px solid var(--border);flex-wrap:wrap}
+.sbadge{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;padding:3px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
+.mcq-b {background:var(--bl);color:var(--blue)}
+.fill-b{background:var(--gl);color:var(--green)}
+.srt-b {background:var(--pl);color:var(--purple)}
+.tf-b  {background:var(--al);color:var(--amber)}
+.mat-b {background:var(--rl);color:var(--red)}
+.mix-b {background:var(--tl);color:var(--teal)}
+.section-title{font-size:14px;font-weight:600}
+.section-pts{margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink3);white-space:nowrap}
+
+/* ── Q BLOCK ── */
+.q-block{display:grid;grid-template-columns:26px 1fr;gap:7px;margin-bottom:1rem;align-items:start}
+.q-num{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink3);padding-top:2px;font-weight:500}
+.q-text{font-size:13.5px;line-height:1.55}
+
+/* ── OPTIONS ── */
+.options{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:7px}
+.opt{border:1px solid var(--border);border-radius:6px;padding:7px 10px;font-size:12.5px;display:flex;align-items:flex-start;gap:8px;background:var(--surface);cursor:pointer;transition:border-color .13s,background .13s;user-select:none;line-height:1.4}
+.opt:hover{border-color:var(--border2);background:var(--bg)}
+.opt.selected{border-color:var(--blue);background:var(--bl)}
+.opt.correct {border-color:var(--green);background:var(--gl)}
+.opt.wrong   {border-color:var(--red);background:var(--rl)}
+.oletter{font-family:'IBM Plex Mono',monospace;font-size:11px;min-width:18px;height:18px;border-radius:3px;background:var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:500;margin-top:1px;transition:background .13s,color .13s}
+.opt.selected .oletter{background:var(--blue);color:#fff}
+.opt.correct .oletter {background:var(--green);color:#fff}
+.opt.wrong .oletter   {background:var(--red);color:#fff}
+
+/* ── FILL GAP ── */
+.gi{border:none;border-bottom:1.5px solid var(--border2);background:transparent;font-family:'Plus Jakarta Sans',sans-serif;font-size:13.5px;color:var(--ink);width:140px;padding:1px 4px;text-align:center;outline:none;transition:border-color .13s;vertical-align:middle}
+.gi:focus{border-color:var(--blue)}
+.gi.ok{border-color:var(--green);color:var(--green);font-weight:500}
+.gi.no{border-color:var(--red);color:var(--red)}
+
+/* ── SHORT ANS ── */
+.ans-box{border:1px solid var(--border);border-radius:6px;background:var(--surface);margin-top:7px;display:flex;align-items:center;gap:8px;padding:5px 10px}
+.ans-lbl{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink3);white-space:nowrap;text-transform:uppercase;letter-spacing:.06em}
+.ai{border:none;border-bottom:1px solid var(--border2);background:transparent;font-family:'Plus Jakarta Sans',sans-serif;font-size:13.5px;flex:1;outline:none;color:var(--ink);padding:1px 2px;transition:border-color .13s}
+.ai:focus{border-color:var(--blue)}
+.ai.ok{border-color:var(--green);color:var(--green)}
+.ai.no{border-color:var(--red);color:var(--red)}
+
+/* ── TRUE/FALSE ── */
+.tf-row{display:grid;grid-template-columns:26px 1fr auto;gap:7px 10px;align-items:center;padding:8px 10px;border-radius:6px;border:1px solid var(--border);background:var(--surface);margin-bottom:6px}
+.tf-btns{display:flex;gap:5px}
+.tfb{font-family:'IBM Plex Mono',monospace;font-size:11px;padding:4px 10px;border:1px solid var(--border);border-radius:4px;cursor:pointer;background:var(--bg);color:var(--ink2);transition:all .12s;font-weight:500}
+.tfb.T.active{background:var(--gl);border-color:var(--green);color:var(--green)}
+.tfb.F.active{background:var(--rl);border-color:var(--red);color:var(--red)}
+.tfb.correct {background:var(--gl);border-color:var(--green);color:var(--green)}
+.tfb.wrong   {background:var(--rl);border-color:var(--red);color:var(--red)}
+
+/* ── MATCHING ── */
+.match-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:7px 10px;align-items:center}
+.ml{border:1px solid #c4b5fd;border-radius:6px;padding:7px 11px;background:var(--pl);font-size:12.5px;font-weight:500;line-height:1.35}
+.mc{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink3);text-align:center}
+.ms{border:1px solid var(--border2);border-radius:4px;padding:5px 7px;font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;background:var(--surface);color:var(--ink);outline:none;cursor:pointer;width:100%}
+.ms:focus{border-color:var(--blue)}
+.ms.ok{border-color:var(--green);background:var(--gl);color:var(--green)}
+.ms.no{border-color:var(--red);background:var(--rl);color:var(--red)}
+
+/* ── ACTIONS ── */
+.action-bar{display:flex;gap:10px;margin-top:2.5rem;padding-top:1.5rem;border-top:2px solid var(--border);flex-wrap:wrap}
+.btn-check{background:var(--ink);color:#fff;border:none;border-radius:6px;padding:10px 22px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:opacity .15s}
+.btn-check:hover{opacity:.85}
+.btn-reset{background:transparent;color:var(--ink2);border:1px solid var(--border2);border-radius:6px;padding:10px 20px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;cursor:pointer}
+.result-card{border:1.5px solid var(--border);border-radius:8px;padding:1rem 1.25rem;background:var(--surface);margin-top:1rem;display:none}
+.result-card.visible{display:block}
+.result-score{font-family:'Libre Baskerville',serif;font-size:26px;font-weight:700}
+.result-detail{font-size:13px;color:var(--ink2);margin-top:4px}
+.hint{font-size:12px;color:var(--ink3);font-style:italic;margin-bottom:.6rem}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HEADER -->
+<div class="header">
+  <span class="subject-tag">Hujayra Biologiyasi · Gen Terapiyasi · 3 mavzu</span>
+  <h1>DNK shikastlanishi · Mutatsiyalar · Nasliy kasalliklar</h1>
+  <div class="meta-row">
+    <div class="meta-box"><label>Familiya, Ism</label><input type="text" id="student-name" class="meta-input" placeholder="Ismingizni kiriting" autocomplete="off" /></div>
+    <div class="meta-box"><label>Guruh</label><input type="text" id="student-group" class="meta-input" placeholder="Guruh raqami" autocomplete="off" /></div>
+    <div class="meta-box"><label>Sana</label><input type="text" id="student-date" class="meta-input" readonly /></div>
+  </div>
+</div>
+
+<div id="start-container" style="text-align: center; margin-top: 3rem; margin-bottom: 3rem; border: 1.5px solid var(--border); padding: 2rem; border-radius: 8px; background: var(--surface);">
+  <h2 style="margin-bottom: 1rem; color: var(--ink);">Testni boshlash uchun tepadagi ism, familiya va guruhni kiriting</h2>
+  <button class="btn-check" id="btn-start" style="font-size: 16px; padding: 12px 30px;">Testni boshlash</button>
+  <p id="start-error" style="color: var(--red); display: none; margin-top: 10px; font-weight: 500;">Iltimos, ism, familiya va guruhni kiriting.</p>
+</div>
+
+<div id="quiz-content" style="display: none; opacity: 0; transition: opacity 0.5s;">
+
+<div class="banner">
+  <span>Jami: <strong id="tot">13</strong> ball</span>
+  <span>Vaqt: <strong id="timer-display">50:00</strong></span>
+  <span>Bo'limlar: <strong>3 mavzu · 5 tur savol</strong></span>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MAVZU 1: DNK shikastlanishi va reparatsiya
+     ══════════════════════════════════════════ -->
+<div class="topic-divider">
+  <span class="topic-num">MAVZU 1</span>
+  <span class="topic-title">DNK shikastlanishi, mutatsiya va reparatsiya</span>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <span class="sbadge mcq-b">MCQ</span>
+    <span class="section-title">Ko'p tanlovli</span>
+    <span class="section-pts">4 × 1 = 4</span>
+  </div>
+
+  <div class="q-block"><span class="q-num">1.</span><div>
+    <div class="q-text">Apurinlanish deb nimaga aytiladi?</div>
+    <div class="options">
+      <div class="opt" data-q="q1" data-v="A"><span class="oletter">A</span>Pirimidin bazasining yo'qolishi</div>
+      <div class="opt" data-q="q1" data-v="B"><span class="oletter">B</span>Dezoksiriboza va purin azot asosi orasidagi bog' uzilib, apurin saytlar paydo bo'lishi</div>
+      <div class="opt" data-q="q1" data-v="C"><span class="oletter">C</span>Sitozin → urasilga aylanishi</div>
+      <div class="opt" data-q="q1" data-v="D"><span class="oletter">D</span>Zanjir uzilishi</div>
+    </div>
+  </div></div>
+
+  <div class="q-block"><span class="q-num">2.</span><div>
+    <div class="q-text">Noto'g'ri komplementarlikni tiklashda qaysi ferment xatolikdan -GATC- ketma-ketlikdagi metillangan adeninga birikadi?</div>
+    <div class="options">
+      <div class="opt" data-q="q2" data-v="A"><span class="oletter">A</span>Mut-S</div>
+      <div class="opt" data-q="q2" data-v="B"><span class="oletter">B</span>Mut-H</div>
+      <div class="opt" data-q="q2" data-v="C"><span class="oletter">C</span>Mut-L</div>
+      <div class="opt" data-q="q2" data-v="D"><span class="oletter">D</span>Ekzonukleaza</div>
+    </div>
+  </div></div>
+
+  <div class="q-block"><span class="q-num">3.</span><div>
+    <div class="q-text">Pigmentli Kserodermiya kasalligining asosiy sababi nima?</div>
+    <div class="options">
+      <div class="opt" data-q="q3" data-v="A"><span class="oletter">A</span>Giston metillanishi buzilishi</div>
+      <div class="opt" data-q="q3" data-v="B"><span class="oletter">B</span>Fotoliaza faolligi pasayib, timin dimerlari to'planishi</div>
+      <div class="opt" data-q="q3" data-v="C"><span class="oletter">C</span>Telomer qisqarishi</div>
+      <div class="opt" data-q="q3" data-v="D"><span class="oletter">D</span>Replikatsiya ori buzilishi</div>
+    </div>
+  </div></div>
+
+  <div class="q-block"><span class="q-num">4.</span><div>
+    <div class="q-text">DNK dezaminlanishida sitozin qaysi modifikatsiyalangan bazaga aylanadi?</div>
+    <div class="options">
+      <div class="opt" data-q="q4" data-v="A"><span class="oletter">A</span>Gipoksantin</div>
+      <div class="opt" data-q="q4" data-v="B"><span class="oletter">B</span>Ksantin</div>
+      <div class="opt" data-q="q4" data-v="C"><span class="oletter">C</span>Uratsil</div>
+      <div class="opt" data-q="q4" data-v="D"><span class="oletter">D</span>Timin</div>
+    </div>
+  </div></div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <span class="sbadge tf-b">T/F</span>
+    <span class="section-title">To'g'ri / Noto'g'ri</span>
+    <span class="section-pts">3 × 1 = 3</span>
+  </div>
+  <div class="tf-row"><span class="q-num">5.</span>
+    <div class="q-text">DNK-Insertaza fermenti apurin saytga mos azot asosini ulab xatolikni tuzatadi.</div>
+    <div class="tf-btns"><button class="tfb T" data-tf="5">T</button><button class="tfb F" data-tf="5">F</button></div>
+  </div>
+  <div class="tf-row"><span class="q-num">6.</span>
+    <div class="q-text">Timinlar dimerlanishi ionlashtiruvchi radiatsiya ta'sirida yuzaga keladi.</div>
+    <div class="tf-btns"><button class="tfb T" data-tf="6">T</button><button class="tfb F" data-tf="6">F</button></div>
+  </div>
+  <div class="tf-row"><span class="q-num">7.</span>
+    <div class="q-text">Fankoni anemiyasida reparatsion sistema buzilishi natijasida suyak iligi yetishmovchiligi sindromi rivojlanadi.</div>
+    <div class="tf-btns"><button class="tfb T" data-tf="7">T</button><button class="tfb F" data-tf="7">F</button></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MAVZU 2: Genetik o'zgaruvchanlik
+     ══════════════════════════════════════════ -->
+<div class="topic-divider">
+  <span class="topic-num">MAVZU 2</span>
+  <span class="topic-title">Genetik o'zgaruvchanlik. Odam genomi.</span>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <span class="sbadge mcq-b">MCQ</span>
+    <span class="section-title">Ko'p tanlovli</span>
+    <span class="section-pts">3 × 1 = 3</span>
+  </div>
+
+  <div class="q-block"><span class="q-num">8.</span><div>
+    <div class="q-text">Odam genomida nechta gen mavjud (Selera Genomik ma'lumotlariga ko'ra)?</div>
+    <div class="options">
+      <div class="opt" data-q="q8" data-v="A"><span class="oletter">A</span>20 000 ta</div>
+      <div class="opt" data-q="q8" data-v="B"><span class="oletter">B</span>39 114 ta</div>
+      <div class="opt" data-q="q8" data-v="C"><span class="oletter">C</span>100 000 ta</div>
+      <div class="opt" data-q="q8" data-v="D"><span class="oletter">D</span>3,1 mlrd ta</div>
+    </div>
+  </div></div>
+
+  <div class="q-block"><span class="q-num">9.</span><div>
+    <div class="q-text">SNP (Single Nucleotide Polymorphism) — bu nima?</div>
+    <div class="options">
+      <div class="opt" data-q="q9" data-v="A"><span class="oletter">A</span>Butun xromosoma ko'payishi</div>
+      <div class="opt" data-q="q9" data-v="B"><span class="oletter">B</span>DNK zanjirida bitta nukleotidning o'zgarishi</div>
+      <div class="opt" data-q="q9" data-v="C"><span class="oletter">C</span>Katta fragment o'chishi</div>
+      <div class="opt" data-q="q9" data-v="D"><span class="oletter">D</span>Xromasoma inversiyasi</div>
+    </div>
+  </div></div>
+
+  <div class="q-block"><span class="q-num">10.</span><div>
+    <div class="q-text">Haploid to'plamli hujayralardan qancha nukleotid va nechta gen mavjud?</div>
+    <div class="options">
+      <div class="opt" data-q="q10" data-v="A"><span class="oletter">A</span>1,4·10⁹ nukleotid, 20 000 gen</div>
+      <div class="opt" data-q="q10" data-v="B"><span class="oletter">B</span>2,8·10⁹ nukleotid, 40 000 dan ortiq gen</div>
+      <div class="opt" data-q="q10" data-v="C"><span class="oletter">C</span>3,1·10⁹ nukleotid, 100 000 gen</div>
+      <div class="opt" data-q="q10" data-v="D"><span class="oletter">D</span>5,6·10⁹ nukleotid, 25 000 gen</div>
+    </div>
+  </div></div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <span class="sbadge fill-b">To'ldirish</span>
+    <span class="section-title">Bo'shliqni to'ldiring</span>
+    <span class="section-pts">3 × 1 = 3</span>
+  </div>
+  <div class="q-block"><span class="q-num">11.</span>
+    <div class="q-text">Bir xil gendan turli muhit sharoitida turlicha oqsil hosil bo'lishi — bu <input class="gi" data-ans="fenotipik" placeholder="________"> o'zgaruvchanlik deb ataladi.</div>
+  </div>
+  <div class="q-block"><span class="q-num">12.</span>
+    <div class="q-text">Oqsillar polimorfizmi — bir xil funksiyani bajaruvchi, lekin aminokislota ketma-ketligi biroz farqli <input class="gi" data-ans="izoformalar" placeholder="________"> mavjudligi.</div>
+  </div>
+  <div class="q-block"><span class="q-num">13.</span>
+    <div class="q-text">Mitoxondrial DNK faqat <input class="gi" data-ans="ona" placeholder="________"> tomonidan yangi organizmga o'tadi.</div>
+  </div>
+</div>
+
+<!-- ACTIONS -->
+<div class="action-bar">
+  <button class="btn-check" onclick="checkAll()">✓ Javoblarni tekshirish</button>
+  <button class="btn-reset" onclick="resetAll()">↺ Qayta boshlash</button>
+</div>
+
+<div class="result-card" id="rc">
+  <span class="result-score" id="sd"></span>
+  <div class="result-detail" id="sp"></div>
+  <div class="result-detail" id="sb" style="margin-top:6px;font-size:12px;"></div>
+</div>
+
+</div><!-- #quiz-content -->
+</div><!-- .page -->
+
+<script>
+document.getElementById('student-date').value = new Date().toLocaleDateString('uz-UZ', { year: 'numeric', month: '2-digit', day: '2-digit' });
+
+let timerInterval;
+
+document.getElementById('btn-start').addEventListener('click', () => {
+  const iName = document.getElementById('student-name');
+  const iGroup = document.getElementById('student-group');
+  const err = document.getElementById('start-error');
+
+  if (!iName.value.trim() || !iGroup.value.trim()) {
+    err.style.display = 'block';
+    return;
+  }
+  err.style.display = 'none';
+
+  iName.setAttribute('readonly', 'true');
+  iGroup.setAttribute('readonly', 'true');
+
+  document.getElementById('start-container').style.display = 'none';
+  const content = document.getElementById('quiz-content');
+  content.style.display = 'block';
+  setTimeout(() => { content.style.opacity = '1'; }, 50);
+
+  startQuiz();
+});
+
+function startQuiz() {
+  let timeLeft = 50 * 60; // 50 minutes
+  timerInterval = setInterval(() => {
+    if(timeLeft <= 0) {
+      clearInterval(timerInterval);
+      document.getElementById('timer-display').textContent = "00:00";
+      alert("Vaqt tugadi! Javoblaringiz avtomatik tekshiriladi.");
+      checkAll();
+      return;
+    }
+    timeLeft--;
+    const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+    const s = (timeLeft % 60).toString().padStart(2, '0');
+    document.getElementById('timer-display').textContent = `${m}:${s}`;
+    if(timeLeft <= 300) { 
+      document.getElementById('timer-display').style.color = 'var(--red)';
+    }
+  }, 1000);
+}
+const MCQ_ANS={q1:'B',q2:'B',q3:'B',q4:'C',q8:'B',q9:'B',q10:'B'};
+const TF_ANS={5:true,6:false,7:true};
+const GAP_ANS=['fenotipik','izoformalar','ona'];
+
+let mcqSel={}, tfSel={};
+
+document.querySelectorAll('.opt').forEach(o=>{
+  o.addEventListener('click',()=>{
+    const q=o.dataset.q;
+    document.querySelectorAll(`.opt[data-q="${q}"]`).forEach(x=>x.classList.remove('selected'));
+    o.classList.add('selected'); mcqSel[q]=o.dataset.v;
+  });
+});
+document.querySelectorAll('.tfb').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const q=b.dataset.tf;
+    document.querySelectorAll(`.tfb[data-tf="${q}"]`).forEach(x=>x.classList.remove('active'));
+    b.classList.add('active'); tfSel[q]=b.classList.contains('T');
+  });
+});
+
+function norm(s){return (s||'').trim().toLowerCase().replace(/[-_]/g,' ')}
+function hits(given,exp){const g=norm(given),e=norm(exp);return g&&(g===e||g.includes(e.split(' ')[0])||e.includes(g.split(' ')[0]))}
+
+function checkAll(){
+  clearInterval(timerInterval);
+  let mcqS=0,tfS=0,fillS=0;
+
+  document.querySelectorAll('.opt').forEach(o=>o.classList.remove('correct','wrong'));
+  Object.entries(MCQ_ANS).forEach(([q,ans])=>{
+    const sel=mcqSel[q];
+    document.querySelectorAll(`.opt[data-q="${q}"]`).forEach(o=>{
+      if(o.dataset.v===ans) o.classList.add('correct');
+      else if(o.dataset.v===sel&&sel!==ans) o.classList.add('wrong');
+    });
+    if(sel===ans) mcqS++;
+  });
+
+  document.querySelectorAll('.tfb').forEach(b=>b.classList.remove('correct','wrong'));
+  Object.entries(TF_ANS).forEach(([q,ans])=>{
+    const sel=tfSel[q];
+    if(sel===undefined) return;
+    document.querySelectorAll(`.tfb[data-tf="${q}"]`).forEach(b=>{
+      if((b.classList.contains('T')&&ans)||(b.classList.contains('F')&&!ans)) b.classList.add('correct');
+      if(b.classList.contains('active')&&sel!==ans) b.classList.add('wrong');
+    });
+    if(sel===ans) tfS++;
+  });
+
+  document.querySelectorAll('.gi').forEach((inp,i)=>{
+    inp.classList.remove('ok','no');
+    if(hits(inp.value,GAP_ANS[i]||'')){inp.classList.add('ok');fillS++;}
+    else if(inp.value.trim()) inp.classList.add('no');
+  });
+
+  const tot=mcqS+tfS+fillS;
+  const pct=Math.round(tot/13*100);
+  const grade=pct>=90?"A'lo":pct>=75?"Yaxshi":pct>=60?"Qoniqarli":"Qayta o'rganing";
+
+  const rc=document.getElementById('rc');
+  rc.classList.add('visible');
+  document.getElementById('sd').textContent=`${tot.toFixed(1)} / 13 ball`;
+  document.getElementById('sp').textContent=`${pct}% — ${grade}`;
+  
+  // Post message to parent iframe to save progress
+  if (window.parent) {
+    window.parent.postMessage({ type: 'WORKSHEET_COMPLETED', scorePct: pct, scoreTotal: tot, maxScore: 13 }, '*');
+  }
+  
+  rc.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function resetAll(){
+  mcqSel={}; tfSel={};
+  document.querySelectorAll('.opt').forEach(o=>o.classList.remove('selected','correct','wrong'));
+  document.querySelectorAll('.gi,.ai').forEach(i=>{i.value='';i.classList.remove('ok','no');});
+  document.querySelectorAll('.tfb').forEach(b=>b.classList.remove('active','correct','wrong'));
+  document.querySelectorAll('.ms').forEach(s=>{s.value='';s.classList.remove('ok','no');});
+  document.getElementById('rc').classList.remove('visible');
+}
+</script>
+</body>
+</html>

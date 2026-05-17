@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gen Ekspressiyasi. Translatsiya — Work Sheet</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Libre+Baskerville:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #f7f5f0;
+    --surface: #ffffff;
+    --ink: #18160f;
+    --ink2: #4a4540;
+    --ink3: #908b84;
+    --accent: #0f5499;
+    --accent-light: #eef4fb;
+    --green: #166534;
+    --green-light: #f0fdf4;
+    --amber: #92400e;
+    --amber-light: #fffbeb;
+    --red: #991b1b;
+    --red-light: #fef2f2;
+    --purple: #5b21b6;
+    --purple-light: #f5f3ff;
+    --teal: #0f766e;
+    --teal-light: #f0fdfa;
+    --border: #e0dbd2;
+    --border2: #c8c2b8;
+  }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.6; padding: 2rem 1rem 4rem; }
+  .page { max-width: 780px; margin: 0 auto; }
+
+  .header { border-bottom: 2.5px solid var(--ink); padding-bottom: 1.25rem; margin-bottom: 2rem; }
+  .subject-tag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); margin-bottom: 6px; display: block; }
+  .header h1 { font-family: 'Libre Baskerville', serif; font-size: 22px; font-weight: 700; line-height: 1.2; margin-bottom: 12px; }
+  .meta-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 1rem; }
+  .meta-box { border: 1px solid var(--border2); border-radius: 6px; padding: 8px 12px; }
+  .meta-box label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink3); display: block; margin-bottom: 4px; font-family: 'IBM Plex Mono', monospace; }
+  .meta-box .line { border-bottom: 1px solid var(--border2); height: 20px; }
+
+  .meta-input {
+    border: none;
+    border-bottom: 1.5px solid var(--border2);
+    width: 100%;
+    outline: none;
+    background: transparent;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    padding: 2px 0 4px;
+    color: var(--ink);
+    transition: border-color 0.15s;
+  }
+  .meta-input:focus { border-color: var(--accent); }
+  .meta-input:read-only { color: var(--ink2); border-bottom: 1.5px solid transparent; }
+
+  .score-banner { background: var(--ink); color: white; border-radius: 8px; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; font-size: 13px; flex-wrap: wrap; gap: 8px; }
+  .score-banner strong { font-family: 'IBM Plex Mono', monospace; font-size: 15px; }
+
+  .section { margin-bottom: 2.5rem; }
+  .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; padding-bottom: 8px; border-bottom: 1.5px solid var(--border); flex-wrap: wrap; }
+  .section-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap; }
+  .badge-mcq  { background: var(--accent-light); color: var(--accent); }
+  .badge-fill { background: var(--green-light); color: var(--green); }
+  .badge-short{ background: var(--purple-light); color: var(--purple); }
+  .badge-tf   { background: var(--amber-light); color: var(--amber); }
+  .badge-match{ background: var(--red-light); color: var(--red); }
+  .badge-code { background: var(--teal-light); color: var(--teal); }
+  .section-title { font-size: 15px; font-weight: 600; }
+  .section-pts { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); white-space: nowrap; }
+
+  .q-block { display: grid; grid-template-columns: 24px 1fr; gap: 8px; margin-bottom: 1.1rem; align-items: start; }
+  .q-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); padding-top: 2px; font-weight: 500; }
+  .q-text { font-size: 13.5px; line-height: 1.55; }
+  .q-sub  { font-size: 12px; color: var(--ink2); margin-top: 4px; font-style: italic; }
+
+  .options { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; }
+  .opt { border: 1px solid var(--border); border-radius: 6px; padding: 7px 10px; font-size: 12.5px; display: flex; align-items: center; gap: 8px; background: var(--surface); cursor: pointer; transition: border-color .15s, background .15s; user-select: none; }
+  .opt:hover { border-color: var(--border2); background: var(--bg); }
+  .opt.selected { border-color: var(--accent); background: var(--accent-light); }
+  .opt.correct  { border-color: var(--green); background: var(--green-light); }
+  .opt.wrong    { border-color: var(--red); background: var(--red-light); }
+  .opt-letter { font-family: 'IBM Plex Mono', monospace; font-size: 11px; width: 18px; height: 18px; border-radius: 3px; background: var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: 500; transition: background .15s, color .15s; }
+  .opt.selected .opt-letter { background: var(--accent); color: white; }
+  .opt.correct .opt-letter  { background: var(--green); color: white; }
+  .opt.wrong .opt-letter    { background: var(--red); color: white; }
+
+  .gap-input { border: none; border-bottom: 1.5px solid var(--border2); background: transparent; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13.5px; color: var(--ink); width: 130px; padding: 1px 4px; text-align: center; outline: none; transition: border-color .15s; }
+  .gap-input:focus { border-color: var(--accent); }
+  .gap-input.correct { border-color: var(--green); color: var(--green); font-weight: 500; }
+  .gap-input.wrong   { border-color: var(--red); color: var(--red); }
+
+  .answer-box { border: 1px solid var(--border); border-radius: 6px; background: var(--surface); margin-top: 8px; display: flex; align-items: center; gap: 8px; padding: 6px 10px; }
+  .answer-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); white-space: nowrap; text-transform: uppercase; letter-spacing: .06em; }
+  .answer-input { border: none; border-bottom: 1px solid var(--border2); background: transparent; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13.5px; flex: 1; outline: none; color: var(--ink); padding: 1px 2px; }
+  .answer-input:focus { border-color: var(--accent); }
+  .answer-input.correct { border-color: var(--green); color: var(--green); }
+  .answer-input.wrong   { border-color: var(--red); color: var(--red); }
+
+  .tf-row { display: grid; grid-template-columns: 24px 1fr auto; gap: 8px 10px; align-items: center; padding: 8px 10px; border-radius: 6px; border: 1px solid var(--border); background: var(--surface); margin-bottom: 7px; }
+  .tf-btns { display: flex; gap: 6px; }
+  .tf-btn { font-family: 'IBM Plex Mono', monospace; font-size: 11px; padding: 4px 10px; border: 1px solid var(--border); border-radius: 4px; cursor: pointer; background: var(--bg); color: var(--ink2); transition: all .12s; font-weight: 500; }
+  .tf-btn.T.active { background: var(--green-light); border-color: var(--green); color: var(--green); }
+  .tf-btn.F.active { background: var(--red-light); border-color: var(--red); color: var(--red); }
+  .tf-btn.correct  { background: var(--green-light); border-color: var(--green); color: var(--green); }
+  .tf-btn.wrong    { background: var(--red-light); border-color: var(--red); color: var(--red); }
+
+  .match-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px 12px; align-items: center; }
+  .match-left { border: 1px solid #c4b5fd; border-radius: 6px; padding: 8px 12px; background: var(--purple-light); font-size: 13px; line-height: 1.4; font-weight: 500; }
+  .match-connector { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); text-align: center; }
+  .match-select { border: 1px solid var(--border2); border-radius: 4px; padding: 5px 8px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 12px; background: var(--surface); color: var(--ink); outline: none; cursor: pointer; width: 100%; }
+  .match-select:focus { border-color: var(--accent); }
+  .match-select.correct { border-color: var(--green); background: var(--green-light); color: var(--green); }
+  .match-select.wrong   { border-color: var(--red); background: var(--red-light); color: var(--red); }
+
+  /* Codon table question */
+  .codon-box { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.25rem; margin-top: 8px; }
+  .codon-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+  .codon-label { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink2); min-width: 180px; }
+  .codon-input { border: none; border-bottom: 1.5px solid var(--border2); background: transparent; font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--ink); width: 100px; padding: 1px 4px; text-align: center; outline: none; }
+  .codon-input:focus { border-color: var(--accent); }
+  .codon-input.correct { border-color: var(--green); color: var(--green); font-weight: 500; }
+  .codon-input.wrong   { border-color: var(--red); color: var(--red); }
+
+  .action-bar { display: flex; gap: 10px; margin-top: 2rem; padding-top: 1.5rem; border-top: 1.5px solid var(--border); flex-wrap: wrap; }
+  .btn-check { background: var(--ink); color: white; border: none; border-radius: 6px; padding: 10px 20px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: opacity .15s; }
+  .btn-check:hover { opacity: .85; }
+  .btn-reset { background: transparent; color: var(--ink2); border: 1px solid var(--border2); border-radius: 6px; padding: 10px 20px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; cursor: pointer; }
+
+  .result-card { border: 1.5px solid var(--border); border-radius: 8px; padding: 1rem 1.25rem; background: var(--surface); margin-top: 1rem; display: none; }
+  .result-card.visible { display: block; }
+  .result-score { font-family: 'Libre Baskerville', serif; font-size: 28px; font-weight: 700; }
+  .result-detail { font-size: 13px; color: var(--ink2); margin-top: 4px; }
+  .hint-text { font-size: 12px; color: var(--ink3); font-style: italic; margin-top: 4px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <span class="subject-tag">Molekulyar Biologiya · 2-mavzu</span>
+    <h1>Gen Ekspressiyasi. Translatsiya.<br>Genetik Kod. Ingibitorlar.</h1>
+    <div class="meta-row">
+      <div class="meta-box"><label>Familiya, Ism</label><input type="text" id="student-name" class="meta-input" placeholder="Ismingizni kiriting" autocomplete="off" /></div>
+      <div class="meta-box"><label>Guruh</label><input type="text" id="student-group" class="meta-input" placeholder="Guruh raqami" autocomplete="off" /></div>
+      <div class="meta-box"><label>Sana</label><input type="text" id="student-date" class="meta-input" readonly /></div>
+    </div>
+  </div>
+
+  <div id="start-container" style="text-align: center; margin-top: 3rem; margin-bottom: 3rem; border: 1.5px solid var(--border); padding: 2rem; border-radius: 8px; background: var(--surface);">
+    <h2 style="margin-bottom: 1rem; color: var(--ink);">Testni boshlash uchun tepadagi ism, familiya va guruhni kiriting</h2>
+    <button class="btn-check" id="btn-start" style="font-size: 16px; padding: 12px 30px;">Testni boshlash</button>
+    <p id="start-error" style="color: var(--red); display: none; margin-top: 10px; font-weight: 500;">Iltimos, ism, familiya va guruhni kiriting.</p>
+  </div>
+
+  <div id="quiz-content" style="display: none; opacity: 0; transition: opacity 0.5s;">
+  <div class="score-banner">
+    <span>Jami ball: <strong id="total-pts">55</strong></span>
+    <span>Vaqt: <strong id="timer-display">45:00</strong></span>
+    <span>Bo'limlar: <strong>A · B · C · D · E · F</strong></span>
+  </div>
+
+  <!-- ══ A: MCQ ══ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-badge badge-mcq">A qism</span>
+      <span class="section-title">Ko'p tanlovli savollar</span>
+      <span class="section-pts">12 × 1 = 12 ball</span>
+    </div>
+
+    <div class="q-block"><span class="q-num">1.</span><div>
+      <div class="q-text">Genetik kodda nechta kadon mavjud va ulardan nechtasi aminokislota kodlaydi?</div>
+      <div class="options">
+        <div class="opt" data-q="m1" data-v="A"><span class="opt-letter">A</span>32 ta, 29 tasi</div>
+        <div class="opt" data-q="m1" data-v="B"><span class="opt-letter">B</span>64 ta, 61 tasi</div>
+        <div class="opt" data-q="m1" data-v="C"><span class="opt-letter">C</span>64 ta, 60 tasi</div>
+        <div class="opt" data-q="m1" data-v="D"><span class="opt-letter">D</span>20 ta, 17 tasi</div>
+      </div>
+    </div></div>
+
+    <div class="q-block"><span class="q-num">2.</span><div>
+      <div class="q-text">Stop (terminator) kadonlar qaysilar?</div>
+      <div class="options">
+        <div class="opt" data-q="m2" data-v="A"><span class="opt-letter">A</span>AUG, UAA, UAG</div>
+        <div class="opt" data-q="m2" data-v="B"><span class="opt-letter">B</span>UAA, UAG, UGA</div>
+        <div class="opt" data-q="m2" data-v="C"><span class="opt-letter">C</span>UUU, AAA, GGG</div>
+        <div class="opt" data-q="m2" data-v="D"><span class="opt-letter">D</span>AUG, GUG, UUG</div>
+      </div>
+    </div></div>
+
+    <div class="q-block"><span class="q-num">3.</span><div>
+      <div class="q-text">Genetik kodning qaysi xususiyati bitta aminokislotani bir necha xil kadon kodlashi mumkinligini bildiradi?</div>
+      <div class="options">
+        <div class="opt" data-q="m3" data-v="A"><span class="opt-letter">A</span>Universallik</div>
+        <div class="opt" data-q="m3" data-v="B"><span class="opt-letter">B</span>Spetsifiklik</div>
+        <div class="opt" data-q="m3" data-v="C"><span class="opt-letter">C</span>Aynimachlik</div>
+        <div class="opt" data-q="m3" data-v="D"><span class="opt-letter">D</span>Kollinerlik</div>
+      </div>
+    </div></div>
+
+    <div class="q-block"><span class="q-num">4.</span><div>
+      <div class="q-text">t-RNKning 3' uchida qanday triplet bo'ladi va u qanday vazifani bajaradi?</div>
+      <div class="options">
+        <div class="opt" data-q="m4" data-v="A"><span class="opt-letter">A</span>GGG — ribosomaga birikadi</div>
+        <div class="opt" data-q="m4" data-v="B"><span class="opt-letter">B</span>SSA (CCA) — aminokislotani biriktiradi</div>
+        <div class="opt" data-q="m4" data-v="C"><span class="opt-letter">C</span>AUG — start signali</div>
+        <div class="opt" data-q="m4" data-v="D"><span class="opt-letter">D</span>UUU — fenilalanin kodlaydi</div>
+      </div>
+    </div></div>
+
+    <div class="q-block"><span class="q-num">5.</span><div>
+      <div class="q-text">Prokariotlarda ribosoma subbirliklarining sedmentatsiya konstantasi to'g'ri keltirilgan qatorni toping:</div>
+      <div class="options">
+        <div class="opt" data-q="m5" data-v="A"><span class="opt-letter">A</span>Katta 40S, kichik 30S → 70S</div>
+        <div class="opt" data-q="m5" data-v="B"><span class="opt-letter">B</span>Katta 60S, kichik 40S → 80S</div>
+        <div class="opt" data-q="m5" data-v="C"><span class="opt-letter">C</span>Katta 50S, kichik 30S → 70S</div>
+        <div class="opt" data-q="m5" data-v="D"><span class="opt-letter">D</span>Katta 60S, kichik 30S → 90S</div>
+      </div>
+    </div></div>
+
+    <div class="q-block"><span class="q-num">6.</span><div>
+      <div class="q-text">Translatsiyaning initsiatsiya bosqichida P-markazda turuvchi birinchi aminokislota qaysi?</div>
+      <div class="options">
+        <div class="opt" data-q="m6" data-v="A"><span class="opt-letter">A</span>Prolin</div>
+        <div class="opt" data-q="m6" data-v="B"><span class="opt-letter">B</span>Lizin</div>
+        <div class="opt" data-q="m6" data-v="C"><span class="opt-letter">C</span>Metionin</div>
+        <div class="opt" data-q="m6" data-v="D"><span class="opt-letter">D</span>Glitsin</div>
+      </div>
+    </div></div>
+
+    <div class="q-block"><span class="q-num">7.</span><div>
+      <div class="q-text">Elongatsiya bosqichida transpeptidatsiyani ta'minlovchi ferment nima deb ataladi?</div>
+      <div class="options">
+        <div class="opt" data-q="m7" data-v="A"><span class="opt-letter">A</span>Aminoatsil-t-RNK sintetaza</div>
+        <div class="opt" data-q="m7" data-v="B"><span class="opt-letter">B</span>Peptidil transferaza</div>
+        <div class="opt" data-q="m7" data-v="C"><span class="opt-letter">C</span>RF-1 (Release Factor)</div>
+        <div class="opt" data-q="m7" data-v="D"><span class="opt-letter">D</span>EiF-3</div>
+      </div>
+    </div></div>
+
+    <div class="q-block"><span class="q-num">8.</span><div>
+      <div class="q-text">Lak-operon mexanizmida laktoza qanday rol o'ynaydi?</div>
+      <div class="options">
+        <div class="opt" data-q="m8" data-v="A"><span class="opt-letter">A</span>Repressor omil sifatida</div>
+        <div class="opt" data-q="m8" data-v="B"><span class="opt-letter">B</span>Induktor omil sifatida</div>
+        <div class="opt" data-q="m8" data-v="C"><span class="opt-letter">C</span>Stop kadon sifatida</div>
+        <div class="opt" data-q="m8" data-v="D"><span class="opt-letter">D</span>Promotor sifatida</div>
+      </div>
+    </div></div>
+
+    <div class="q-block"><span class="q-num">9.</span><div>
+      <div class="q-text">Tetrasiklinlar qaysi mexanizm orqali translatsiyani inhibe qiladi?</div>
+      <div class="options">
+        <div class="opt" data-q="m9" data-v="A"><span class="opt-letter">A</span>Peptidil transferazani bloklaydi</div>
+        <div class="opt" data-q="m9" data-v="B"><span class="opt-letter">B</span>Translokatsiyanı to'xtatadi</div>
+        <div class="opt" data-q="m9" data-v="C"><span class="opt-letter">C</span>A-markazga birikib elongatsiyani ingibirlaydi</div>
+        <div class="opt" data-q="m9" data-v="D"><span class="opt-letter">D</span>Initsiatsion kompleks hosil bo'lishini ingibirlaydi</div>
+      </div>
+    </div></div>
+
+    <div class="q-block"><span class="q-num">10.</span><div>
+      <div class="q-text">Rifamitsinlar qaysi jarayonni va qaysi organizmga xos qilib bloklaydi?</div>
+      <div class="options">
+        <div class="opt" data-q="m10" data-v="A"><span class="opt-letter">A</span>Replikatsiyani — eukariotlarga xos</div>
+        <div class="opt" data-q="m10" data-v="B"><span class="opt-letter">B</span>Transkripsiyani — prokariotlarga xos</div>
+        <div class="opt" data-q="m10" data-v="C"><span class="opt-letter">C</span>Translatsiyani — barcha organizmlarga</div>
+        <div class="opt" data-q="m10" data-v="D"><span class="opt-letter">D</span>Transkripsiyani — eukariotlarga xos</div>
+      </div>
+    </div></div>
+
+    <div class="q-block"><span class="q-num">11.</span><div>
+      <div class="q-text">Aminoatsil-t-RNK sintetazalarning nechta turi mavjud va nega?</div>
+      <div class="options">
+        <div class="opt" data-q="m11" data-v="A"><span class="opt-letter">A</span>3 tur — 3 ta stop kadon uchun</div>
+        <div class="opt" data-q="m11" data-v="B"><span class="opt-letter">B</span>20 tur — 20 xil aminokislota uchun</div>
+        <div class="opt" data-q="m11" data-v="C"><span class="opt-letter">C</span>61 tur — 61 kadon uchun</div>
+        <div class="opt" data-q="m11" data-v="D"><span class="opt-letter">D</span>64 tur — barcha kadonlar uchun</div>
+      </div>
+    </div></div>
+
+    <div class="q-block"><span class="q-num">12.</span><div>
+      <div class="q-text">Posttranslatsion modifikatsiya — "qisman proteoliz" ning misoli qaysi?</div>
+      <div class="options">
+        <div class="opt" data-q="m12" data-v="A"><span class="opt-letter">A</span>Gemoglobinga gem birikishi</div>
+        <div class="opt" data-q="m12" data-v="B"><span class="opt-letter">B</span>Tripsinogen → tripsin (enteropeptidaza ta'sirida)</div>
+        <div class="opt" data-q="m12" data-v="C"><span class="opt-letter">C</span>Tirosin gormoni yodlanishi</div>
+        <div class="opt" data-q="m12" data-v="D"><span class="opt-letter">D</span>Membrana glikoproteinlari hosil bo'lishi</div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ══ B: FILL IN THE GAP ══ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-badge badge-fill">B qism</span>
+      <span class="section-title">Bo'shliqni to'ldiring</span>
+      <span class="section-pts">10 × 1 = 10 ball</span>
+    </div>
+    <p class="hint-text">Har bir bo'shliqqa to'g'ri termin yoki so'z yozing.</p><br>
+
+    <div class="q-block"><span class="q-num">13.</span>
+      <div class="q-text">m-RNK tarkibida har 3 ta nukleotid bitta aminokislotani kodlaydi — bu genetik kodning <input class="gap-input" data-ans="tripletlik" placeholder="_________"> xususiyati deb ataladi.</div>
+    </div>
+
+    <div class="q-block"><span class="q-num">14.</span>
+      <div class="q-text">t-RNKdagi antikadon govuzlog' o'zida <input class="gap-input" data-ans="antikadon" placeholder="_________"> tripletini saqlaydi va m-RNK kadoniga mos aminokislotani olib borish uchun zarur.</div>
+    </div>
+
+    <div class="q-block"><span class="q-num">15.</span>
+      <div class="q-text">Ribosomaning <input class="gap-input" data-ans="a-aminoatsil" placeholder="_________"> markazi yangi aminokislota olib keluvchi aa-t-RNKlarni bog'laydi.</div>
+    </div>
+
+    <div class="q-block"><span class="q-num">16.</span>
+      <div class="q-text">Bitta m-RNKga bir necha ribosoma birikib <input class="gap-input" data-ans="poliribosoma" placeholder="_________"> ni hosil qiladi va bu oqsil sintezining samaradorligini oshiradi.</div>
+    </div>
+
+    <div class="q-block"><span class="q-num">17.</span>
+      <div class="q-text">Gen ekspressiyasining tashqi ta'sirga javoban kuchayishi <input class="gap-input" data-ans="pozitiv" placeholder="_________"> regulatsiya yoki Induksiya deb nomlanadi.</div>
+    </div>
+
+    <div class="q-block"><span class="q-num">18.</span>
+      <div class="q-text">Prokariotlarda gen ekspressiyasining boshqarilishida operator deb nomlangan joyga birikib transkripsiyani to'xtatuvchi oqsil <input class="gap-input" data-ans="repressor" placeholder="_________"> deb ataladi.</div>
+    </div>
+
+    <div class="q-block"><span class="q-num">19.</span>
+      <div class="q-text">Daunomitsin va Doksorubitsin DNK nukleotidlari orasiga kirib (interkalirlanib) <input class="gap-input" data-ans="replikatsiya" placeholder="_________"> ni to'xtatadi.</div>
+    </div>
+
+    <div class="q-block"><span class="q-num">20.</span>
+      <div class="q-text">Giston asetillansa transkripsiyani <input class="gap-input" data-ans="aktivlaydi" placeholder="_________">, metillansa esa ingibirlaydi.</div>
+    </div>
+
+    <div class="q-block"><span class="q-num">21.</span>
+      <div class="q-text">Yangi sintezlangan oqsillarning hammasi ipsimon bo'lib, keyin turli kimyoviy bog'lar yordamida o'ralib aktiv shaklga o'tishi <input class="gap-input" data-ans="folding" placeholder="_________"> deb ataladi.</div>
+    </div>
+
+    <div class="q-block"><span class="q-num">22.</span>
+      <div class="q-text">Kollagen sintezida prolin va lizin aminokislotalari <input class="gap-input" data-ans="gidroksillanadi" placeholder="_________"> va bu kovalent modifikatsiya hisoblanadi.</div>
+    </div>
+  </div>
+
+  <!-- ══ C: SHORT ANSWER ══ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-badge badge-short">C qism</span>
+      <span class="section-title">Qisqa javob (1–2 so'z)</span>
+      <span class="section-pts">8 × 1.5 = 12 ball</span>
+    </div>
+    <p class="hint-text">Har bir savolga maksimum 2 so'zdan iborat javob yozing.</p><br>
+
+    <div class="q-block"><span class="q-num">23.</span><div>
+      <div class="q-text">Genetik kodda start kadon qaysi va u qaysi aminokislotani kodlaydi?</div>
+      <div class="answer-box"><span class="answer-label">Javob:</span><input class="answer-input" data-ans="aug metionin" placeholder="yozing..."></div>
+    </div></div>
+
+    <div class="q-block"><span class="q-num">24.</span><div>
+      <div class="q-text">UUU kadon qaysi aminokislotani kodlaydi?</div>
+      <div class="answer-box"><span class="answer-label">Javob:</span><input class="answer-input" data-ans="fenilalanin" placeholder="yozing..."></div>
+    </div></div>
+
+    <div class="q-block"><span class="q-num">25.</span><div>
+      <div class="q-text">Aminoatsil-t-RNK sintetaza fermentlari necha xato bilan ishlaydi?</div>
+      <div class="answer-box"><span class="answer-label">Javob:</span><input class="answer-input" data-ans="1300 da 1" placeholder="yozing..."></div>
+    </div></div>
+
+    <div class="q-block"><span class="q-num">26.</span><div>
+      <div class="q-text">Operon nazariyasini kim va qaysi yilda yaratgan?</div>
+      <div class="answer-box"><span class="answer-label">Javob:</span><input class="answer-input" data-ans="jakob mono 1961" placeholder="yozing..."></div>
+    </div></div>
+
+    <div class="q-block"><span class="q-num">27.</span><div>
+      <div class="q-text">Levomitsitin (xloramfenikol) translatsiyaning qaysi bosqichini to'xtatadi?</div>
+      <div class="answer-box"><span class="answer-label">Javob:</span><input class="answer-input" data-ans="transpeptidatsiya" placeholder="yozing..."></div>
+    </div></div>
+
+    <div class="q-block"><span class="q-num">28.</span><div>
+      <div class="q-text">Amanita Phalloides (qo'ziqorin) tarkibidagi α-amanitin qanday fermentni ingibirlaydi?</div>
+      <div class="answer-box"><span class="answer-label">Javob:</span><input class="answer-input" data-ans="rnk polimeraza" placeholder="yozing..."></div>
+    </div></div>
+
+    <div class="q-block"><span class="q-num">29.</span><div>
+      <div class="q-text">Eukariotlarda ribosomaning katta va kichik subbirliklarining konstantalari qanday va yig'ilganda nechaga teng?</div>
+      <div class="answer-box"><span class="answer-label">Javob:</span><input class="answer-input" data-ans="60s 40s 80s" placeholder="yozing..."></div>
+    </div></div>
+
+    <div class="q-block"><span class="q-num">30.</span><div>
+      <div class="q-text">Virus hujayrani zararlashning asosiy mexanizmi — virus o'z DNKsini hujayra DNKsiga qo'shib nima qiladi?</div>
+      <div class="answer-box"><span class="answer-label">Javob:</span><input class="answer-input" data-ans="oqsil sintezlaydi" placeholder="yozing..."></div>
+    </div></div>
+  </div>
+
+  <!-- ══ D: CODON TABLE ══ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-badge badge-code">D qism</span>
+      <span class="section-title">Kadon jadvali — aminokislotani toping</span>
+      <span class="section-pts">6 × 1 = 6 ball</span>
+    </div>
+    <p class="hint-text">Genetik kod jadvalidan foydalanib kadonlarga mos aminokislotani yozing.</p>
+    <div class="q-block"><span class="q-num">31.</span><div>
+      <div class="codon-box">
+        <div class="codon-row"><span class="codon-label">GGG →</span><input class="codon-input" data-cans="glitsin" placeholder="aminokislota"></div>
+        <div class="codon-row"><span class="codon-label">CAU →</span><input class="codon-input" data-cans="gistidin" placeholder="aminokislota"></div>
+        <div class="codon-row"><span class="codon-label">UGG →</span><input class="codon-input" data-cans="triptofan" placeholder="aminokislota"></div>
+        <div class="codon-row"><span class="codon-label">AAA →</span><input class="codon-input" data-cans="lizin" placeholder="aminokislota"></div>
+        <div class="codon-row"><span class="codon-label">CCU →</span><input class="codon-input" data-cans="prolin" placeholder="aminokislota"></div>
+        <div class="codon-row"><span class="codon-label">UGA →</span><input class="codon-input" data-cans="stop" placeholder="aminokislota/stop"></div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ══ E: TRUE/FALSE ══ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-badge badge-tf">E qism</span>
+      <span class="section-title">To'g'ri / Noto'g'ri</span>
+      <span class="section-pts">7 × 1 = 7 ball</span>
+    </div>
+
+    <div class="tf-row"><span class="q-num">32.</span>
+      <div class="q-text">Genetik kod barcha organizmlar uchun universal bo'lib, -CCC- kadon bakteriyada ham, odamda ham prolinni kodlaydi.</div>
+      <div class="tf-btns"><button class="tf-btn T" data-tf="32">T</button><button class="tf-btn F" data-tf="32">F</button></div>
+    </div>
+
+    <div class="tf-row"><span class="q-num">33.</span>
+      <div class="q-text">Eukariotlarda kollinearlik to'liq kuzatiladi, chunki m-RNK faqat ekzonlardan iborat bo'ladi.</div>
+      <div class="tf-btns"><button class="tf-btn T" data-tf="33">T</button><button class="tf-btn F" data-tf="33">F</button></div>
+    </div>
+
+    <div class="tf-row"><span class="q-num">34.</span>
+      <div class="q-text">Ribosomaning A-markazi yangi hosil bo'layotgan polipeptidni tutib turadi.</div>
+      <div class="tf-btns"><button class="tf-btn T" data-tf="34">T</button><button class="tf-btn F" data-tf="34">F</button></div>
+    </div>
+
+    <div class="tf-row"><span class="q-num">35.</span>
+      <div class="q-text">Eritromitsin va Puromitsin translokatsiyani to'xtatadi.</div>
+      <div class="tf-btns"><button class="tf-btn T" data-tf="35">T</button><button class="tf-btn F" data-tf="35">F</button></div>
+    </div>
+
+    <div class="tf-row"><span class="q-num">36.</span>
+      <div class="q-text">Triptofan ko'p bo'lsa, repressor oqsil aktivlashib operonga birikadi — bu pozitiv regulatsiya hisoblanadi.</div>
+      <div class="tf-btns"><button class="tf-btn T" data-tf="36">T</button><button class="tf-btn F" data-tf="36">F</button></div>
+    </div>
+
+    <div class="tf-row"><span class="q-num">37.</span>
+      <div class="q-text">Interferon — organizmning istalgan virus bilan zararlanganda ishlab chiqaradigan nospetsifik antivirus oqsilidir.</div>
+      <div class="tf-btns"><button class="tf-btn T" data-tf="37">T</button><button class="tf-btn F" data-tf="37">F</button></div>
+    </div>
+
+    <div class="tf-row"><span class="q-num">38.</span>
+      <div class="q-text">Aminoglikozidlar (masalan: Streptomitsin) kichik subbirlikka birikib, initsiatsion kompleks hosil bo'lishini ingibirlaydi.</div>
+      <div class="tf-btns"><button class="tf-btn T" data-tf="38">T</button><button class="tf-btn F" data-tf="38">F</button></div>
+    </div>
+  </div>
+
+  <!-- ══ F: MATCHING ══ -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-badge badge-match">F qism</span>
+      <span class="section-title">Moslashtiring</span>
+      <span class="section-pts">8 × 1 = 8 ball</span>
+    </div>
+    <p class="hint-text">Antibiotik/ingibitor bilan uning ta'sir mexanizmini moslashtiring.</p><br>
+
+    <div class="match-grid">
+      <div class="match-left">Tetrasiklinlar</div>
+      <div class="match-connector">→</div>
+      <select class="match-select" data-ma="f1" data-ans="C">
+        <option value="">— tanlang —</option>
+        <option value="A">A: RNK-polimeraza ingibitori (prokariotlarga xos)</option>
+        <option value="B">B: DNK interkalirlash orqali replikatsiyani to'xtatadi</option>
+        <option value="C">C: A-markazga birikib elongatsiyani ingibirlaydi</option>
+        <option value="D">D: Transpeptidatsiyani to'xtatadi</option>
+        <option value="E">E: Translokatsiyanı to'xtatadi</option>
+        <option value="F">F: Initsiatsion kompleks hosil bo'lishini ingibirlaydi</option>
+        <option value="G">G: Topoizomeraza-II (Giraza) ni bloklaydi</option>
+        <option value="H">H: DNKni alkillab replikatsiyani to'xtatadi</option>
+      </select>
+
+      <div class="match-left">Levomitsitin</div>
+      <div class="match-connector">→</div>
+      <select class="match-select" data-ma="f2" data-ans="D">
+        <option value="">— tanlang —</option>
+        <option value="A">A: RNK-polimeraza ingibitori (prokariotlarga xos)</option>
+        <option value="B">B: DNK interkalirlash orqali replikatsiyani to'xtatadi</option>
+        <option value="C">C: A-markazga birikib elongatsiyani ingibirlaydi</option>
+        <option value="D">D: Transpeptidatsiyani to'xtatadi</option>
+        <option value="E">E: Translokatsiyanı to'xtatadi</option>
+        <option value="F">F: Initsiatsion kompleks hosil bo'lishini ingibirlaydi</option>
+        <option value="G">G: Topoizomeraza-II (Giraza) ni bloklaydi</option>
+        <option value="H">H: DNKni alkillab replikatsiyani to'xtatadi</option>
+      </select>
+
+      <div class="match-left">Eritromitsin</div>
+      <div class="match-connector">→</div>
+      <select class="match-select" data-ma="f3" data-ans="E">
+        <option value="">— tanlang —</option>
+        <option value="A">A: RNK-polimeraza ingibitori (prokariotlarga xos)</option>
+        <option value="B">B: DNK interkalirlash orqali replikatsiyani to'xtatadi</option>
+        <option value="C">C: A-markazga birikib elongatsiyani ingibirlaydi</option>
+        <option value="D">D: Transpeptidatsiyani to'xtatadi</option>
+        <option value="E">E: Translokatsiyanı to'xtatadi</option>
+        <option value="F">F: Initsiatsion kompleks hosil bo'lishini ingibirlaydi</option>
+        <option value="G">G: Topoizomeraza-II (Giraza) ni bloklaydi</option>
+        <option value="H">H: DNKni alkillab replikatsiyani to'xtatadi</option>
+      </select>
+
+      <div class="match-left">Rifamitsinlar</div>
+      <div class="match-connector">→</div>
+      <select class="match-select" data-ma="f4" data-ans="A">
+        <option value="">— tanlang —</option>
+        <option value="A">A: RNK-polimeraza ingibitori (prokariotlarga xos)</option>
+        <option value="B">B: DNK interkalirlash orqali replikatsiyani to'xtatadi</option>
+        <option value="C">C: A-markazga birikib elongatsiyani ingibirlaydi</option>
+        <option value="D">D: Transpeptidatsiyani to'xtatadi</option>
+        <option value="E">E: Translokatsiyanı to'xtatadi</option>
+        <option value="F">F: Initsiatsion kompleks hosil bo'lishini ingibirlaydi</option>
+        <option value="G">G: Topoizomeraza-II (Giraza) ni bloklaydi</option>
+        <option value="H">H: DNKni alkillab replikatsiyani to'xtatadi</option>
+      </select>
+
+      <div class="match-left">Streptomitsin</div>
+      <div class="match-connector">→</div>
+      <select class="match-select" data-ma="f5" data-ans="F">
+        <option value="">— tanlang —</option>
+        <option value="A">A: RNK-polimeraza ingibitori (prokariotlarga xos)</option>
+        <option value="B">B: DNK interkalirlash orqali replikatsiyani to'xtatadi</option>
+        <option value="C">C: A-markazga birikib elongatsiyani ingibirlaydi</option>
+        <option value="D">D: Transpeptidatsiyani to'xtatadi</option>
+        <option value="E">E: Translokatsiyanı to'xtatadi</option>
+        <option value="F">F: Initsiatsion kompleks hosil bo'lishini ingibirlaydi</option>
+        <option value="G">G: Topoizomeraza-II (Giraza) ni bloklaydi</option>
+        <option value="H">H: DNKni alkillab replikatsiyani to'xtatadi</option>
+      </select>
+
+      <div class="match-left">Nalidiks kislotasi</div>
+      <div class="match-connector">→</div>
+      <select class="match-select" data-ma="f6" data-ans="G">
+        <option value="">— tanlang —</option>
+        <option value="A">A: RNK-polimeraza ingibitori (prokariotlarga xos)</option>
+        <option value="B">B: DNK interkalirlash orqali replikatsiyani to'xtatadi</option>
+        <option value="C">C: A-markazga birikib elongatsiyani ingibirlaydi</option>
+        <option value="D">D: Transpeptidatsiyani to'xtatadi</option>
+        <option value="E">E: Translokatsiyanı to'xtatadi</option>
+        <option value="F">F: Initsiatsion kompleks hosil bo'lishini ingibirlaydi</option>
+        <option value="G">G: Topoizomeraza-II (Giraza) ni bloklaydi</option>
+        <option value="H">H: DNKni alkillab replikatsiyani to'xtatadi</option>
+      </select>
+
+      <div class="match-left">Daunomitsin</div>
+      <div class="match-connector">→</div>
+      <select class="match-select" data-ma="f7" data-ans="B">
+        <option value="">— tanlang —</option>
+        <option value="A">A: RNK-polimeraza ingibitori (prokariotlarga xos)</option>
+        <option value="B">B: DNK interkalirlash orqali replikatsiyani to'xtatadi</option>
+        <option value="C">C: A-markazga birikib elongatsiyani ingibirlaydi</option>
+        <option value="D">D: Transpeptidatsiyani to'xtatadi</option>
+        <option value="E">E: Translokatsiyanı to'xtatadi</option>
+        <option value="F">F: Initsiatsion kompleks hosil bo'lishini ingibirlaydi</option>
+        <option value="G">G: Topoizomeraza-II (Giraza) ni bloklaydi</option>
+        <option value="H">H: DNKni alkillab replikatsiyani to'xtatadi</option>
+      </select>
+
+      <div class="match-left">Melfalan</div>
+      <div class="match-connector">→</div>
+      <select class="match-select" data-ma="f8" data-ans="H">
+        <option value="">— tanlang —</option>
+        <option value="A">A: RNK-polimeraza ingibitori (prokariotlarga xos)</option>
+        <option value="B">B: DNK interkalirlash orqali replikatsiyani to'xtatadi</option>
+        <option value="C">C: A-markazga birikib elongatsiyani ingibirlaydi</option>
+        <option value="D">D: Transpeptidatsiyani to'xtatadi</option>
+        <option value="E">E: Translokatsiyanı to'xtatadi</option>
+        <option value="F">F: Initsiatsion kompleks hosil bo'lishini ingibirlaydi</option>
+        <option value="G">G: Topoizomeraza-II (Giraza) ni bloklaydi</option>
+        <option value="H">H: DNKni alkillab replikatsiyani to'xtatadi</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="action-bar">
+    <button class="btn-check" onclick="checkAll()">✓ Javoblarni tekshirish</button>
+    <button class="btn-reset" onclick="resetAll()">↺ Qayta boshlash</button>
+  </div>
+
+  <div class="result-card" id="result-card">
+    <div style="display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;">
+      <span class="result-score" id="score-display"></span>
+      <span class="result-detail" id="score-pct"></span>
+    </div>
+    <div class="result-detail" id="score-breakdown" style="margin-top:6px;"></div>
+  </div>
+</div>
+</div>
+
+<script>
+// Sana avtomatik qo'yish
+document.getElementById('student-date').value = new Date().toLocaleDateString('uz-UZ', { year: 'numeric', month: '2-digit', day: '2-digit' });
+
+// Taymer (45 daqiqa)
+let timerInterval;
+
+document.getElementById('btn-start').addEventListener('click', () => {
+  const iName = document.getElementById('student-name');
+  const iGroup = document.getElementById('student-group');
+  const err = document.getElementById('start-error');
+
+  if (!iName.value.trim() || !iGroup.value.trim()) {
+    err.style.display = 'block';
+    return;
+  }
+  err.style.display = 'none';
+
+  iName.setAttribute('readonly', 'true');
+  iGroup.setAttribute('readonly', 'true');
+
+  document.getElementById('start-container').style.display = 'none';
+  const content = document.getElementById('quiz-content');
+  content.style.display = 'block';
+  setTimeout(() => { content.style.opacity = '1'; }, 50);
+
+  startQuiz();
+});
+
+function startQuiz() {
+  let timeLeft = 45 * 60; // seconds
+  timerInterval = setInterval(() => {
+    if(timeLeft <= 0) {
+      clearInterval(timerInterval);
+      document.getElementById('timer-display').textContent = "00:00";
+      alert("Vaqt tugadi! Javoblaringiz avtomatik tekshiriladi.");
+      checkAll();
+      return;
+    }
+    timeLeft--;
+    const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+    const s = (timeLeft % 60).toString().padStart(2, '0');
+    document.getElementById('timer-display').textContent = `${m}:${s}`;
+    if(timeLeft <= 300) { // last 5 minutes
+      document.getElementById('timer-display').style.color = 'var(--red)';
+    }
+  }, 1000);
+}
+
+const MCQ = {m1:'B',m2:'B',m3:'C',m4:'B',m5:'C',m6:'C',m7:'B',m8:'B',m9:'C',m10:'B',m11:'B',m12:'B'};
+const TF  = {32:true,33:false,34:false,35:true,36:false,37:true,38:true};
+const GAP = ['tripletlik','antikadon','a-aminoatsil','poliribosoma','pozitiv','repressor','replikatsiya','aktivlaydi','folding','gidroksillanadi'];
+const SHORT = ['aug metionin','fenilalanin','1300','jakob mono','transpeptidatsiya','rnk polimeraza','60s 40s 80s','oqsil sintez'];
+const CODON = ['glitsin','gistidin','triptofan','lizin','prolin','stop'];
+
+let mcqSel={}, tfSel={};
+
+document.querySelectorAll('.opt').forEach(o=>{
+  o.addEventListener('click',()=>{
+    const q=o.dataset.q;
+    document.querySelectorAll(`.opt[data-q="${q}"]`).forEach(x=>x.classList.remove('selected'));
+    o.classList.add('selected');
+    mcqSel[q]=o.dataset.v;
+  });
+});
+document.querySelectorAll('.tf-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const q=b.dataset.tf;
+    document.querySelectorAll(`.tf-btn[data-tf="${q}"]`).forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    tfSel[q]=b.classList.contains('T');
+  });
+});
+
+function norm(s){ return (s||'').trim().toLowerCase().replace(/[-_]/g,' '); }
+function match(given, expected){ const g=norm(given), e=norm(expected); return g&&(g===e||g.includes(e.split(' ')[0])||e.includes(g.split(' ')[0])); }
+
+function checkAll(){
+  clearInterval(timerInterval);
+  let mcqS=0,fillS=0,shortS=0,codonS=0,tfS=0,matchS=0;
+
+  // MCQ
+  document.querySelectorAll('.opt').forEach(o=>o.classList.remove('correct','wrong'));
+  Object.entries(MCQ).forEach(([q,ans])=>{
+    const sel=mcqSel[q];
+    document.querySelectorAll(`.opt[data-q="${q}"]`).forEach(o=>{
+      if(o.dataset.v===ans) o.classList.add('correct');
+      else if(o.dataset.v===sel&&sel!==ans) o.classList.add('wrong');
+    });
+    if(sel===ans) mcqS++;
+  });
+
+  // Fill
+  document.querySelectorAll('.gap-input').forEach((inp,i)=>{
+    inp.classList.remove('correct','wrong');
+    if(match(inp.value, GAP[i]||'')){ inp.classList.add('correct'); fillS++; }
+    else if(inp.value.trim()) inp.classList.add('wrong');
+  });
+
+  // Short
+  document.querySelectorAll('.answer-input').forEach((inp,i)=>{
+    inp.classList.remove('correct','wrong');
+    if(match(inp.value, SHORT[i]||'')){ inp.classList.add('correct'); shortS+=1.5; }
+    else if(inp.value.trim()) inp.classList.add('wrong');
+  });
+
+  // Codon
+  document.querySelectorAll('.codon-input').forEach((inp,i)=>{
+    inp.classList.remove('correct','wrong');
+    if(match(inp.value, CODON[i]||'')){ inp.classList.add('correct'); codonS++; }
+    else if(inp.value.trim()) inp.classList.add('wrong');
+  });
+
+  // TF
+  document.querySelectorAll('.tf-btn').forEach(b=>b.classList.remove('correct','wrong'));
+  Object.entries(TF).forEach(([q,ans])=>{
+    const sel=tfSel[q];
+    if(sel===undefined) return;
+    document.querySelectorAll(`.tf-btn[data-tf="${q}"]`).forEach(b=>{
+      if((b.classList.contains('T')&&ans)||(b.classList.contains('F')&&!ans)) b.classList.add('correct');
+      if(b.classList.contains('active')&&sel!==ans) b.classList.add('wrong');
+    });
+    if(sel===ans) tfS++;
+  });
+
+  // Match
+  document.querySelectorAll('.match-select').forEach(s=>{
+    s.classList.remove('correct','wrong');
+    if(!s.value) return;
+    if(s.value===s.dataset.ans){ s.classList.add('correct'); matchS++; }
+    else s.classList.add('wrong');
+  });
+
+  const total=(mcqS+fillS+shortS+codonS+tfS+matchS);
+  const pct=Math.round(total/55*100);
+  const grade=pct>=90?'A\'lo':pct>=75?'Yaxshi':pct>=60?'Qoniqarli':'Qayta o\'rganing';
+
+  const card=document.getElementById('result-card');
+  card.classList.add('visible');
+  document.getElementById('score-display').textContent=`${total.toFixed(1)} / 55 ball`;
+  document.getElementById('score-pct').textContent=`${pct}% — ${grade}`;
+  document.getElementById('score-breakdown').textContent=
+    `A: ${mcqS}/12 · B: ${fillS}/10 · C: ${shortS.toFixed(1)}/12 · D: ${codonS}/6 · E: ${tfS}/7 · F: ${matchS}/8`;
+  card.scrollIntoView({behavior:'smooth',block:'nearest'});
+  
+  // Send message to parent frame
+  if (window.parent) {
+    window.parent.postMessage({
+        type: 'WORKSHEET_COMPLETED',
+        scorePct: pct,
+        scoreTotal: total,
+        maxScore: 55
+    }, '*');
+  }
+}
+
+function resetAll(){
+  mcqSel={}; tfSel={};
+  document.querySelectorAll('.opt').forEach(o=>o.classList.remove('selected','correct','wrong'));
+  document.querySelectorAll('.gap-input,.answer-input,.codon-input').forEach(i=>{i.value='';i.classList.remove('correct','wrong');});
+  document.querySelectorAll('.tf-btn').forEach(b=>b.classList.remove('active','correct','wrong'));
+  document.querySelectorAll('.match-select').forEach(s=>{s.value='';s.classList.remove('correct','wrong');});
+  document.getElementById('result-card').classList.remove('visible');
+}
+</script>
+</body>
+</html>

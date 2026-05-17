@@ -1,0 +1,115 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "A user of the platform, including students and administrators",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "role": { "type": "string", "enum": ["student", "admin"] },
+        "xp": { "type": "number" },
+        "level": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["email", "role", "xp", "level", "createdAt"]
+    },
+    "Topic": {
+      "title": "Topic",
+      "description": "An educational topic or module",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "order": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "order", "createdAt"]
+    },
+    "ContentItem": {
+      "title": "Content Item",
+      "description": "Generic content item (book, video, note) linked to a topic",
+      "type": "object",
+      "properties": {
+        "topicId": { "type": "string" },
+        "type": { "type": "string", "enum": ["book", "video", "note"] },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "url": { "type": "string" },
+        "contentMarkup": { "type": "string" },
+        "language": { "type": "string", "enum": ["en", "ru", "uz"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["topicId", "type", "title", "language", "createdAt"]
+    },
+    "Worksheet": {
+      "title": "Worksheet",
+      "description": "A collection of questions for a topic",
+      "type": "object",
+      "properties": {
+        "topicId": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "questions": {
+          "type": "array",
+          "items": { "$ref": "#/entities/Question" }
+        },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["topicId", "title", "createdAt", "questions"]
+    },
+    "Question": {
+        "title": "Question",
+        "description": "A question within a worksheet",
+        "type": "object",
+        "properties": {
+            "type": { "type": "string", "enum": ["mcq", "fill_in", "short_answer", "clinical_case"]},
+            "text": { "type": "string" },
+            "options": { "type": "array", "items": { "type": "string" } },
+            "correctAnswer": { "type": "string" },
+            "explanation": { "type": "string" }
+        },
+        "required": ["type", "text", "correctAnswer"]
+    },
+    "Progress": {
+      "title": "User Progress",
+      "description": "Tracks a user's progress on a worksheet or topic",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "itemId": { "type": "string" },
+        "itemType": { "type": "string", "enum": ["topic", "worksheet", "video"] },
+        "status": { "type": "string", "enum": ["started", "completed"] },
+        "score": { "type": "number" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "itemId", "itemType", "status", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": "User",
+      "description": "Platform users"
+    },
+    "topics/{topicId}": {
+      "schema": "Topic",
+      "description": "Educational topics/modules"
+    },
+    "contentItems/{itemId}": {
+      "schema": "ContentItem",
+      "description": "Books, videos, and notes associated with topics"
+    },
+    "worksheets/{worksheetId}": {
+      "schema": "Worksheet",
+      "description": "Worksheets and quizzes"
+    },
+    "progress/{progressId}": {
+      "schema": "Progress",
+      "description": "Tracks student progress"
+    }
+  }
+}

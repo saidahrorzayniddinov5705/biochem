@@ -1,0 +1,97 @@
+import express from "express";
+import path from "path";
+import { createServer as createViteServer } from "vite";
+import { GoogleGenAI } from "@google/genai";
+import OpenAI from "openai";
+
+const ai = new GoogleGenAI({
+  apiKey: process.env.GEMINI_API_KEY,
+  httpOptions: {
+    headers: {
+      'User-Agent': 'aistudio-build',
+    }
+  }
+});
+
+async function startServer() {
+  const app = express();
+  const PORT = 3000;
+
+  app.use(express.json());
+
+  // API constraints
+  app.post("/api/ai", async (req, res) => {
+    try {
+      const { prompt, model = 'gemini-3-flash-preview', config } = req.body;
+      let customOpenAiKey = req.headers['x-openai-key'] || process.env.OPENAAI || process.env.openaai || process.env.OPENAI_API_KEY;
+      
+      if (!customOpenAiKey || customOpenAiKey === 'null' || customOpenAiKey === 'undefined') {
+        // Iterate over all env vars to find anything resembling openaai or matching sk- prefix
+        for (const [k, v] of Object.entries(process.env)) {
+           const lowerKey = k.toLowerCase();
+           if (lowerKey === 'openai_api_key' || lowerKey.includes('openaai') || lowerKey === 'openai' || (typeof v === 'string' && v.startsWith('sk-'))) {
+               customOpenAiKey = v as string;
+               break;
+           }
+        }
+      }
+
+      if (customOpenAiKey && typeof customOpenAiKey === 'string' && customOpenAiKey.length > 5) {
+        // Use OpenAI
+        const openai = new OpenAI({ apiKey: customOpenAiKey });
+        
+        let messages = [];
+        if (config?.responseMimeType === 'application/json') {
+           messages = [
+              { role: 'system', content: 'You must output raw JSON. Do not use markdown blocks like ```json.' },
+              { role: 'user', content: prompt }
+           ];
+        } else {
+           messages = [
+              { role: 'user', content: prompt }
+           ];
+        }
+
+        const completion = await openai.chat.completions.create({
+          model: "gpt-4o-mini",
+          messages: messages as any,
+          response_format: config?.responseMimeType === 'application/json' ? { type: "json_object" } : { type: "text" },
+        });
+
+        res.json({ text: completion.choices[0]?.message?.content || "" });
+        return;
+      }
+
+      const response = await ai.models.generateContent({
+        model,
+        contents: prompt,
+        config
+      });
+      res.json({ text: response.text });
+    } catch (error: any) {
+      console.error("AI Error:", error);
+      res.status(500).json({ error: error.message || "Failed to generate content" });
+    }
+  });
+
+  // Vite middleware for development
+  if (process.env.NODE_ENV !== "production") {
+    const vite = await createViteServer({
+      server: { middlewareMode: true },
+      appType: "spa",
+    });
+    app.use(vite.middlewares);
+  } else {
+    const distPath = path.join(process.cwd(), 'dist');
+    app.use(express.static(distPath));
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(distPath, 'index.html'));
+    });
+  }
+
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}
+
+startServer();

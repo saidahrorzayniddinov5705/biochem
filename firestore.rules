@@ -1,0 +1,70 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() { return request.auth != null; }
+    function isAdmin() { return isSignedIn() && (request.auth.token.email == "saidahrorzayniddinov@gmail.com" || request.auth.token.email == "izbosarovislomjon@gmail.com" || (exists(/databases/$(database)/documents/users/$(request.auth.uid)) && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin")); }
+    function isValidId(id) { return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); }
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+
+    function isUser(data) {
+      return data.email is string && data.email.size() <= 200 &&
+             data.role is string && (data.role == "student" || data.role == "admin") &&
+             data.xp is number &&
+             data.level is number &&
+             data.createdAt is timestamp &&
+             (data.keys().hasAll(["email", "role", "xp", "level", "createdAt"]));
+    }
+
+    match /users/{userId} {
+      allow get: if isSignedIn() && isValidId(userId);
+      allow list: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(userId) && request.auth.uid == userId;
+      allow update: if isSignedIn() && isValidId(userId) && request.auth.uid == userId &&
+                    (
+                       incoming().diff(existing()).affectedKeys().hasOnly(['xp', 'level', 'updatedAt', 'role', 'displayName', 'streakCount', 'lastStreakDateStr'])
+                    ) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /topics/{topicId} {
+      allow get, list: if isSignedIn();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /contentItems/{itemId} {
+      allow get, list: if isSignedIn();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /worksheets/{worksheetId} {
+      allow get, list: if isSignedIn();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /libraryBooks/{bookId} {
+      allow get, list: if isSignedIn();
+      allow create, update, delete: if isAdmin();
+    }
+
+    function isProgress(data) {
+        return data.userId is string && data.userId.size() <= 128 &&
+               data.itemId is string && data.itemId.size() <= 128 &&
+               data.itemType is string && data.itemType.size() <= 50 &&
+               data.status is string && (data.status == "started" || data.status == "completed") &&
+               data.updatedAt is timestamp;
+    }
+
+    match /progress/{progressId} {
+      allow get: if isSignedIn() && isValidId(progressId) && resource.data.userId == request.auth.uid;
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && isValidId(progressId) && isProgress(incoming()) && incoming().userId == request.auth.uid;
+      allow update: if isSignedIn() && isValidId(progressId) && existing().userId == request.auth.uid && incoming().userId == request.auth.uid &&
+                    (incoming().diff(existing()).affectedKeys().hasOnly(['status', 'score', 'updatedAt']));
+    }
+  }
+}

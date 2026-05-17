@@ -1,0 +1,17 @@
+export const BIOCHEM_TOPICS = [
+    { id: 'mock-1', title: 'Introduction to Biochemistry', subtopics: ['Atoms & Molecules', 'Water Properties', 'pH and Buffers'] },
+    { id: 'mock-2', title: 'Amino Acids and Peptides', subtopics: ['Structure of Amino Acids', 'Peptide Bond', 'Acidity and Basicity'] },
+    { id: 'mock-3', title: 'Protein Structure', subtopics: ['Primary Structure', 'Secondary & Tertiary Structure', 'Protein Folding'] },
+    { id: 'mock-4', title: 'Enzymes and Kinetics', subtopics: ['Michaelis-Menten Kinetics', 'Enzyme Inhibition', 'Allosteric Regulation'] },
+    { id: 'mock-5', title: 'Carbohydrate Chemistry', subtopics: ['Monosaccharides', 'Disaccharides', 'Polysaccharides'] },
+    { id: 'mock-6', title: 'Lipids and Membranes', subtopics: ['Fatty Acids', 'Phospholipids', 'Membrane Transport'] },
+    { id: 'mock-7', title: 'Nucleic Acid Structure', subtopics: ['DNA relative mapping', 'RNA synthesis', 'Nucleotide structures'] },
+    { id: 'mock-8', title: 'DNA Replication', subtopics: ['DNA Polymerase', 'Helicase action', 'Okazaki Fragments'] },
+    { id: 'mock-9', title: 'Transcription', subtopics: ['RNA Polymerase mechanics', 'Promoters', 'mRNA processing'] },
+    { id: 'mock-10', title: 'Translation', subtopics: ['Ribosomal complexes', 'tRNA transport mechanisms', 'Polypeptide elongation'] },
+    { id: 'mock-11', title: 'Glycolysis', subtopics: ['Energy investment phase', 'Payoff phase', 'Pyruvate fates'] },
+    { id: 'mock-12', title: 'Citric Acid Cycle', subtopics: ['Acetyl-CoA', 'Cycle intermediate reactions', 'Regulation mechanisms'] },
+    { id: 'mock-13', title: 'Oxidative Phosphorylation', subtopics: ['Electron Transport Chain', 'Proton motive force', 'ATP Synthase operations'] },
+    { id: 'mock-14', title: 'Photosynthesis', subtopics: ['Light-dependent reactions', 'Photosystems I & II', 'Calvin-Benson Cycle'] },
+    { id: 'mock-15', title: 'Nitrogen & Amino Acid Metabolism', subtopics: ['Transamination', 'Urea Cycle', 'Nucleotide biosynthesis'] },
+];
