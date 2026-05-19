@@ -20,7 +20,18 @@ async function startServer() {
   app.use(express.json({ limit: '10mb' }));
 
   // API constraints
-  app.post("/api/ai", async (req, res) => {
+  app.all("/api/ai*", async (req, res) => {
+    if (req.method === 'OPTIONS') {
+      res.header("Access-Control-Allow-Origin", "*");
+      res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS");
+      res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, Content-Length, X-Requested-With, x-openai-key");
+      res.sendStatus(200);
+      return;
+    }
+    if (req.method !== 'POST') {
+      res.status(405).json({ error: 'Method Not Allowed' });
+      return;
+    }
     try {
       const { prompt, model = 'gemini-2.0-flash', config } = req.body;
       let customOpenAiKey = (req.headers['x-openai-key'] as string) || process.env.OPENAI_API_KEY || process.env.OpenAI || process.env.OPENAI_KEY || '';
