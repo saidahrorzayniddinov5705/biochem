@@ -16,11 +16,9 @@ export default function Layout() {
   const { user, firebaseUser } = useUserStore();
   const location = useLocation();
   const { theme, setTheme, language, setLanguage } = useSettingsStore();
-  const [showKeyModal, setShowKeyModal] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [editName, setEditName] = useState('');
   const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
-  const [apiKey, setApiKey] = useState(localStorage.getItem('openai_api_key') || '');
   const { setUser } = useUserStore();
 
   // Reset edit name when user opens modal
@@ -73,12 +71,6 @@ export default function Layout() {
 
   const handleLogout = () => {
     signOut(auth);
-  };
-
-  const saveApiKey = () => {
-    localStorage.setItem('openai_api_key', apiKey);
-    setShowKeyModal(false);
-    toast.success('OpenAI API kaliti saqlandi');
   };
 
   return (
@@ -177,12 +169,6 @@ export default function Layout() {
                     {theme === 'dark' ? <Sun className="w-4 h-4 mr-2" /> : <Moon className="w-4 h-4 mr-2" />}
                     Theme toggle
                  </DropdownMenuItem>
-                 {user.role === 'admin' && (
-                    <DropdownMenuItem className="cursor-pointer" onClick={() => setShowKeyModal(true)}>
-                       <Key className="w-4 h-4 mr-2" />
-                       AI Settings / API Key
-                    </DropdownMenuItem>
-                 )}
                  <DropdownMenuSeparator />
                  <DropdownMenuItem onClick={handleLogout} className="text-destructive focus:text-destructive cursor-pointer">
                     <LogOut className="w-4 h-4 mr-2" />
@@ -214,40 +200,6 @@ export default function Layout() {
           <Outlet />
         </main>
       </div>
-
-      {showKeyModal && (
-        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-          <div className="bg-card w-full max-w-md p-6 rounded-2xl border shadow-xl">
-            <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-              <BrainCircuit className="w-5 h-5 text-primary" /> AI Settings
-            </h2>
-            <p className="text-sm text-muted-foreground mb-4">
-              Ixtiyoriy: Agar sizda OpenAI API kaliti (ChatGPT) bo'lsa, bu yerga kiriting. Agar kiritmasangiz, standart Gemini AI ishlatiladi.
-            </p>
-            <input 
-              type="text" 
-              value={apiKey} 
-              onChange={e => setApiKey(e.target.value)} 
-              placeholder="sk-proj-..."
-              className="w-full flex h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background mb-4"
-            />
-            <div className="flex justify-end gap-2">
-              <button 
-                onClick={() => setShowKeyModal(false)}
-                className="px-4 py-2 text-sm font-medium hover:bg-muted rounded-md transition-colors"
-              >
-                Bekor qilish
-              </button>
-              <button 
-                onClick={saveApiKey}
-                className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 rounded-md transition-colors"
-              >
-                Saqlash
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {showProfileModal && (
         <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">

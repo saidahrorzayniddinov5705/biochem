@@ -22,7 +22,7 @@ async function startServer() {
   // API constraints
   app.post("/api/ai", async (req, res) => {
     try {
-      const { prompt, model = 'gemini-3-flash-preview', config } = req.body;
+      const { prompt, model = 'gemini-2.0-flash', config } = req.body;
       let customOpenAiKey = req.headers['x-openai-key'] || process.env.OPENAAI || process.env.openaai || process.env.OPENAI_API_KEY;
       
       if (!customOpenAiKey || customOpenAiKey === 'null' || customOpenAiKey === 'undefined') {

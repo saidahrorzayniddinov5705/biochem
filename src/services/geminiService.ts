@@ -9,17 +9,14 @@ Always aim to:
 6. CRITICAL: Identify the language the student is speaking (Uzbek, Russian, English, etc.) and ALWAYS reply ENTIRELY in that exact same language. Do NOT mix languages. DO NOT use Turkish. If the language is Uzbek (O'zbek tili), reply purely in Uzbek.`;
 
 async function callAI(prompt: string, config?: any) {
-  const openAIKey = localStorage.getItem('openai_api_key') || '';
-  
   const response = await fetch('/api/ai', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
-      ...(openAIKey ? { 'x-openai-key': openAIKey } : {})
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify({
       prompt,
-      model: 'gemini-3-flash-preview',
+      model: 'gemini-2.0-flash',
       config
     })
   });

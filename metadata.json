@@ -2,5 +2,5 @@
   "name": "BioMind AI",
   "description": "An AI-powered multilingual medical biochemistry learning platform featuring an admin CMS, interactive worksheets, and a virtual AI tutor.",
   "requestFramePermissions": [],
-  "majorCapabilities": []
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
