@@ -9,6 +9,7 @@ import { Button } from '../components/ui/button';
 import { useSettingsStore } from '../lib/settingsStore';
 import { getTranslation } from '../lib/i18n';
 import { useUserStore } from '../lib/store';
+import { getYouTubeVideoId } from '../lib/utils';
 import { generateFlashcards } from '../services/geminiService';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../components/ui/dialog';
 import { motion, AnimatePresence } from 'motion/react';
@@ -251,17 +252,24 @@ export default function TopicPage() {
                       </div>
                   ) : (
                       <div className="grid sm:grid-cols-2 gap-4">
-                          {videos.map(video => (
+                          {videos.map(video => {
+                              const thumbId = getYouTubeVideoId(video.url);
+                              return (
                               <Card key={video.id} className="hover:border-primary cursor-pointer overflow-hidden group" onClick={() => window.open(video.url, '_blank')}>
-                                  <div className="h-40 bg-zinc-200 relative flex justify-center items-center group-hover:bg-primary/20 transition-colors">
-                                       <PlayCircle className="w-12 h-12 text-zinc-500 group-hover:text-primary transition-colors" />
+                                  <div className="h-40 bg-zinc-200 relative flex justify-center items-center group-hover:bg-primary/20 transition-colors overflow-hidden">
+                                      {thumbId ? (
+                                        <img src={`https://img.youtube.com/vi/${thumbId}/hqdefault.jpg`} alt={video.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                                      ) : null}
+                                      <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors" />
+                                       <PlayCircle className="w-12 h-12 text-white group-hover:text-primary transition-colors relative z-10 drop-shadow-md" />
                                   </div>
                                   <CardContent className="p-4">
                                       <h4 className="font-semibold">{video.title}</h4>
                                       <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{video.description}</p>
                                   </CardContent>
                               </Card>
-                          ))}
+                              );
+                          })}
                       </div>
                   )}
               </section>

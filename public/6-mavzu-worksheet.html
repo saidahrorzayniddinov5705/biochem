@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Temir almashinuvi. Gemostaz — Work Sheet</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #faf8f4;
+    --surface: #ffffff;
+    --ink: #1a1814;
+    --ink2: #4a4640;
+    --ink3: #8a8480;
+    --accent: #1d4ed8;
+    --accent-light: #eff6ff;
+    --green: #15803d;
+    --green-light: #f0fdf4;
+    --amber: #b45309;
+    --amber-light: #fffbeb;
+    --red: #b91c1c;
+    --red-light: #fef2f2;
+    --purple: #6d28d9;
+    --purple-light: #f5f3ff;
+    --border: #e2ddd8;
+    --border2: #ccc8c0;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 2rem 1rem 4rem;
+  }
+
+  .page {
+    max-width: 780px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .header {
+    border-bottom: 2.5px solid var(--ink);
+    padding-bottom: 1.25rem;
+    margin-bottom: 2rem;
+  }
+  .subject-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+    display: block;
+  }
+  .header h1 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  .meta-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 1rem;
+  }
+  .meta-box {
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    padding: 8px 12px;
+  }
+  .meta-box label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink3);
+    display: block;
+    margin-bottom: 4px;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .meta-input {
+    border: none;
+    border-bottom: 1.5px solid var(--border2);
+    width: 100%;
+    outline: none;
+    background: transparent;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    padding: 2px 0 4px;
+    color: var(--ink);
+    transition: border-color 0.15s;
+  }
+  .meta-input:focus {
+    border-color: var(--accent);
+  }
+  .meta-input:read-only {
+    color: var(--ink2);
+    border-bottom: 1.5px solid transparent;
+  }
+
+  /* Score banner */
+  .score-banner {
+    background: var(--ink);
+    color: white;
+    border-radius: 8px;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    font-size: 13px;
+  }
+  .score-banner strong { font-family: 'IBM Plex Mono', monospace; font-size: 15px; }
+
+  /* Section */
+  .section {
+    margin-bottom: 2.5rem;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1rem;
+    padding-bottom: 8px;
+    border-bottom: 1.5px solid var(--border);
+  }
+  .section-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+  .badge-mcq    { background: var(--accent-light); color: var(--accent); }
+  .badge-fill   { background: var(--green-light); color: var(--green); }
+  .badge-short  { background: var(--purple-light); color: var(--purple); }
+  .badge-tf     { background: var(--amber-light); color: var(--amber); }
+  .badge-match  { background: var(--red-light); color: var(--red); }
+
+  .section-title {
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .section-pts {
+    margin-left: auto;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--ink3);
+    white-space: nowrap;
+  }
+
+  /* Q blocks */
+  .q-block {
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    gap: 8px;
+    margin-bottom: 1.1rem;
+    align-items: start;
+  }
+  .q-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--ink3);
+    padding-top: 2px;
+    font-weight: 500;
+  }
+  .q-text { font-size: 13.5px; line-height: 1.55; }
+  .q-text em { font-style: italic; color: var(--ink2); }
+
+  /* MCQ options */
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .opt {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 7px 10px;
+    font-size: 12.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface);
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    user-select: none;
+  }
+  .opt:hover { border-color: var(--border2); background: var(--bg); }
+  .opt.selected { border-color: var(--accent); background: var(--accent-light); }
+  .opt.correct  { border-color: var(--green); background: var(--green-light); }
+  .opt.wrong    { border-color: var(--red); background: var(--red-light); }
+  .opt-letter {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    width: 18px;
+    height: 18px;
+    border-radius: 3px;
+    background: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-weight: 500;
+    transition: background 0.15s, color 0.15s;
+  }
+  .opt.selected .opt-letter { background: var(--accent); color: white; }
+  .opt.correct .opt-letter  { background: var(--green); color: white; }
+  .opt.wrong .opt-letter    { background: var(--red); color: white; }
+
+  /* Fill gap */
+  .fill-line {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    vertical-align: middle;
+  }
+  .gap-input {
+    border: none;
+    border-bottom: 1.5px solid var(--border2);
+    background: transparent;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13.5px;
+    color: var(--ink);
+    width: 120px;
+    padding: 1px 4px;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .gap-input:focus { border-color: var(--accent); }
+  .gap-input.correct { border-color: var(--green); color: var(--green); font-weight: 500; }
+  .gap-input.wrong   { border-color: var(--red); color: var(--red); }
+
+  /* Short answer */
+  .answer-box {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface);
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+  }
+  .answer-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--ink3);
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .answer-input {
+    border: none;
+    border-bottom: 1px solid var(--border2);
+    background: transparent;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13.5px;
+    flex: 1;
+    outline: none;
+    color: var(--ink);
+    padding: 1px 2px;
+  }
+  .answer-input:focus { border-color: var(--accent); }
+  .answer-input.correct { border-color: var(--green); color: var(--green); }
+  .answer-input.wrong   { border-color: var(--red); color: var(--red); }
+
+  /* True/False */
+  .tf-row {
+    display: grid;
+    grid-template-columns: 22px 1fr auto;
+    gap: 8px 10px;
+    align-items: center;
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    margin-bottom: 7px;
+    transition: border-color 0.15s;
+  }
+  .tf-row:hover { border-color: var(--border2); }
+  .tf-btns { display: flex; gap: 6px; }
+  .tf-btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    padding: 4px 10px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    cursor: pointer;
+    background: var(--bg);
+    color: var(--ink2);
+    transition: all 0.12s;
+    font-weight: 500;
+  }
+  .tf-btn:hover { border-color: var(--border2); background: var(--surface); }
+  .tf-btn.T.active { background: var(--green-light); border-color: var(--green); color: var(--green); }
+  .tf-btn.F.active { background: var(--red-light); border-color: var(--red); color: var(--red); }
+  .tf-btn.correct  { background: var(--green-light); border-color: var(--green); color: var(--green); }
+  .tf-btn.wrong    { background: var(--red-light); border-color: var(--red); color: var(--red); }
+
+  /* Matching */
+  .match-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 8px 12px;
+    align-items: center;
+  }
+  .match-left, .match-right {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 12px;
+    background: var(--surface);
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  .match-left { background: var(--purple-light); border-color: #c4b5fd; }
+  .match-connector {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--ink3);
+    text-align: center;
+  }
+  .match-select {
+    border: 1px solid var(--border2);
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 12.5px;
+    background: var(--surface);
+    color: var(--ink);
+    outline: none;
+    cursor: pointer;
+    width: 100%;
+    appearance: none;
+    text-align: center;
+  }
+  .match-select:focus { border-color: var(--accent); }
+  .match-select.correct { border-color: var(--green); background: var(--green-light); color: var(--green); }
+  .match-select.wrong   { border-color: var(--red); background: var(--red-light); color: var(--red); }
+
+  /* Action bar */
+  .action-bar {
+    display: flex;
+    gap: 10px;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1.5px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .btn-check {
+    background: var(--ink);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .btn-check:hover { opacity: 0.85; }
+  .btn-reset {
+    background: transparent;
+    color: var(--ink2);
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .btn-reset:hover { border-color: var(--border2); }
+
+  .result-card {
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    background: var(--surface);
+    margin-top: 1rem;
+    display: none;
+  }
+  .result-card.visible { display: block; }
+  .result-score {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 28px;
+    font-weight: 700;
+  }
+  .result-detail { font-size: 13px; color: var(--ink2); margin-top: 4px; }
+
+  .hint-text {
+    font-size: 12px;
+    color: var(--ink3);
+    font-style: italic;
+    margin-top: 6px;
+  }
+
+  .explanation {
+    margin-top: 10px;
+    padding: 10px 14px;
+    background: #f8fafc;
+    border-left: 3px solid var(--border);
+    border-radius: 6px;
+    font-size: 13.5px;
+    color: var(--ink2);
+    display: none;
+    line-height: 1.5;
+  }
+  .explanation.correct { border-left-color: var(--green); background: var(--green-light); }
+  .explanation.wrong { border-left-color: var(--red); background: var(--red-light); color: var(--red); }
+  .explanation strong { color: var(--ink); }
+
+  hr.divider { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+
+  @media print {
+    body { background: white; }
+    .action-bar, .btn-check, .btn-reset, #start-container { display: none; }
+    #quiz-content { display: block !important; opacity: 1 !important; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <span class="subject-tag">Gematologiya · 6-mavzu</span>
+    <h1>Temir almashinuvi. Gemostaz.</h1>
+    <div class="meta-row">
+      <div class="meta-box"><label>Familiya, Ism</label><input type="text" id="student-name" class="meta-input" placeholder="Ismingizni kiriting" autocomplete="off" /></div>
+      <div class="meta-box"><label>Guruh</label><input type="text" id="student-group" class="meta-input" placeholder="Guruh raqami" autocomplete="off" /></div>
+      <div class="meta-box"><label>Sana</label><input type="text" id="student-date" class="meta-input" readonly /></div>
+    </div>
+  </div>
+
+  <div id="start-container" style="text-align: center; margin-top: 3rem; margin-bottom: 3rem; border: 1.5px solid var(--border); padding: 2rem; border-radius: 8px; background: var(--surface);">
+    <h2 style="margin-bottom: 1rem; color: var(--ink);">Testni boshlash uchun tepadagi ism, familiya va guruhni kiriting</h2>
+    <button class="btn-check" id="btn-start" style="font-size: 16px; padding: 12px 30px;">Testni boshlash</button>
+    <p id="start-error" style="color: var(--red); display: none; margin-top: 10px; font-weight: 500;">Iltimos, ism, familiya va guruhni kiriting.</p>
+  </div>
+
+  <div id="quiz-content" style="display: none; opacity: 0; transition: opacity 0.5s;">
+    <div class="score-banner">
+      <span>Jami ball: <strong id="total-pts">50</strong></span>
+      <span>Vaqt: <strong id="timer-display">40:00</strong></span>
+      <span>Tekshirish: <strong>↓ pastda</strong></span>
+    </div>
+
+    <!-- SECTION A -->
+    <div class="section">
+      <div class="section-header"><span class="section-badge badge-mcq">A qism</span><span class="section-title">Ko'p tanlovli savollar</span><span class="section-pts">10 × 1 ball = 10</span></div>
+
+      <div class="q-block">
+        <span class="q-num">1.</span>
+        <div><div class="q-text">Temir odam organizmida asosan qaysi oqsil tarkibida eng ko'p uchraydi?</div>
+          <div class="options">
+            <div class="opt" data-q="m1" data-v="A"><span class="opt-letter">A</span>Gemoglobin</div>
+            <div class="opt" data-q="m1" data-v="B"><span class="opt-letter">B</span>Mioglobin</div>
+            <div class="opt" data-q="m1" data-v="C"><span class="opt-letter">C</span>Ferritin</div>
+            <div class="opt" data-q="m1" data-v="D"><span class="opt-letter">D</span>Transferrin</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <span class="q-num">2.</span>
+        <div><div class="q-text">Temirning qonda tashilishini ta'minlovchi oqsil qaysi?</div>
+          <div class="options">
+            <div class="opt" data-q="m2" data-v="A"><span class="opt-letter">A</span>Gepsidin</div>
+            <div class="opt" data-q="m2" data-v="B"><span class="opt-letter">B</span>Transferrin</div>
+            <div class="opt" data-q="m2" data-v="C"><span class="opt-letter">C</span>Albumin</div>
+            <div class="opt" data-q="m2" data-v="D"><span class="opt-letter">D</span>Ferritin zanjiri</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <span class="q-num">3.</span>
+        <div><div class="q-text">Enterotsitlarda temirni qonga so'rilishini boshqaruvchi asosiy gormon nima?</div>
+          <div class="options">
+            <div class="opt" data-q="m3" data-v="A"><span class="opt-letter">A</span>Eritropoetin</div>
+            <div class="opt" data-q="m3" data-v="B"><span class="opt-letter">B</span>Gepsidin</div>
+            <div class="opt" data-q="m3" data-v="C"><span class="opt-letter">C</span>Gemosiderin</div>
+            <div class="opt" data-q="m3" data-v="D"><span class="opt-letter">D</span>Ferroportin</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <span class="q-num">4.</span>
+        <div><div class="q-text">Birlamchi gemostazning asosiy ishtirokchilari nimalar?</div>
+          <div class="options">
+            <div class="opt" data-q="m4" data-v="A"><span class="opt-letter">A</span>Eritrotsitlar va leykotsitlar</div>
+            <div class="opt" data-q="m4" data-v="B"><span class="opt-letter">B</span>Trombotsitlar va tomir endoteliysi</div>
+            <div class="opt" data-q="m4" data-v="C"><span class="opt-letter">C</span>Koagulyatsion omillar</div>
+            <div class="opt" data-q="m4" data-v="D"><span class="opt-letter">D</span>Fibrin tolasi</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <span class="q-num">5.</span>
+        <div><div class="q-text">Trombotsitlar qaysi hujayralardan hosil bo'ladi?</div>
+          <div class="options">
+            <div class="opt" data-q="m5" data-v="A"><span class="opt-letter">A</span>Megakariotsit</div>
+            <div class="opt" data-q="m5" data-v="B"><span class="opt-letter">B</span>Retikulotsit</div>
+            <div class="opt" data-q="m5" data-v="C"><span class="opt-letter">C</span>Monotsit</div>
+            <div class="opt" data-q="m5" data-v="D"><span class="opt-letter">D</span>Limfoblast</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <span class="q-num">6.</span>
+        <div><div class="q-text">Qon ivishining ichki (intrinsek) yo'li asosan qaysi omil faollashuvi bilan boshlanadi?</div>
+          <div class="options">
+            <div class="opt" data-q="m6" data-v="A"><span class="opt-letter">A</span>VII omil</div>
+            <div class="opt" data-q="m6" data-v="B"><span class="opt-letter">B</span>X omil</div>
+            <div class="opt" data-q="m6" data-v="C"><span class="opt-letter">C</span>XII omil</div>
+            <div class="opt" data-q="m6" data-v="D"><span class="opt-letter">D</span>II omil</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <span class="q-num">7.</span>
+        <div><div class="q-text">Umumiy ivish yo'lida protrombinni trombinga aylantiruvchi faol kompleksda asosan qaysi omil ishtirok etadi?</div>
+          <div class="options">
+            <div class="opt" data-q="m7" data-v="A"><span class="opt-letter">A</span>Xa omil</div>
+            <div class="opt" data-q="m7" data-v="B"><span class="opt-letter">B</span>VIIa omil</div>
+            <div class="opt" data-q="m7" data-v="C"><span class="opt-letter">C</span>XIIIa omil</div>
+            <div class="opt" data-q="m7" data-v="D"><span class="opt-letter">D</span>Fibrinogen</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <span class="q-num">8.</span>
+        <div><div class="q-text">Trombotsitlar yuzasidagi glikoprotein Ib (GP Ib) retseptori qaysi modda bilan bog'lanadi?</div>
+          <div class="options">
+            <div class="opt" data-q="m8" data-v="A"><span class="opt-letter">A</span>Fibrinogen</div>
+            <div class="opt" data-q="m8" data-v="B"><span class="opt-letter">B</span>Fon Villebrand omili</div>
+            <div class="opt" data-q="m8" data-v="C"><span class="opt-letter">C</span>Kollagen (to'g'ridan to'g'ri)</div>
+            <div class="opt" data-q="m8" data-v="D"><span class="opt-letter">D</span>Trombin</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <span class="q-num">9.</span>
+        <div><div class="q-text">Ikkilamchi gemostazning yakuniy bosqichida qon tomir devoridagi shikastni yopuvchi qanday to'r hosil bo'ladi?</div>
+          <div class="options">
+            <div class="opt" data-q="m9" data-v="A"><span class="opt-letter">A</span>Trombotsitar oq tiqin</div>
+            <div class="opt" data-q="m9" data-v="B"><span class="opt-letter">B</span>Fibrin polimer to'ri</div>
+            <div class="opt" data-q="m9" data-v="C"><span class="opt-letter">C</span>Plazmin to'ri</div>
+            <div class="opt" data-q="m9" data-v="D"><span class="opt-letter">D</span>Protrombin kompleksi</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <span class="q-num">10.</span>
+        <div><div class="q-text">Shikast bitgach, trombni parchalash (fibrinoliz) jarayonining asosiy fermenti nima?</div>
+          <div class="options">
+            <div class="opt" data-q="m10" data-v="A"><span class="opt-letter">A</span>Trombin</div>
+            <div class="opt" data-q="m10" data-v="B"><span class="opt-letter">B</span>Kinin</div>
+            <div class="opt" data-q="m10" data-v="C"><span class="opt-letter">C</span>Plazmin</div>
+            <div class="opt" data-q="m10" data-v="D"><span class="opt-letter">D</span>Geparin</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION B -->
+    <div class="section">
+      <div class="section-header"><span class="section-badge badge-fill">B qism</span><span class="section-title">Bo'shliqni to'ldiring</span><span class="section-pts">10 × 1 ball = 10</span></div><br>
+      <div class="q-block"><span class="q-num">11.</span>
+        <div class="q-text" data-q="fill_0">Temir zahirasi organizmda asosan jigar va makrofaglarda <span class="fill-line"><input class="gap-input" data-ans="ferritin" placeholder="___________"></span> shaklida saqlanadi.</div></div>
+      <div class="q-block"><span class="q-num">12.</span>
+        <div class="q-text" data-q="fill_1">Ichaklardan so'rilgan yoki makrofaglardan ajralgan temirni qonga o'tkazuvchi eksport oqsili <span class="fill-line"><input class="gap-input" data-ans="ferroportin" placeholder="___________"></span> deb ataladi.</div></div>
+      <div class="q-block"><span class="q-num">13.</span>
+        <div class="q-text" data-q="fill_2">Trombotsitlar endoteliy ostidagi kollagenga qon aylanishidagi <span class="fill-line"><input class="gap-input" data-ans="fon villebrand" placeholder="___________"></span> omili (vWF) ishtirokida yopishadi.</div></div>
+      <div class="q-block"><span class="q-num">14.</span>
+        <div class="q-text" data-q="fill_3">Qon ivish kaskadining tashqi va ichki yo'llari <span class="fill-line"><input class="gap-input" data-ans="x" placeholder="___________"></span> (10-omil) faollashgan nuqtada birlashadi.</div></div>
+      <div class="q-block"><span class="q-num">15.</span>
+        <div class="q-text" data-q="fill_4">Fibrinogenni fibrin tolasiga aylantiruvchi va qon ivishida asosiy rolni o'ynaydigan ferment bu <span class="fill-line"><input class="gap-input" data-ans="trombin" placeholder="___________"></span> dir.</div></div>
+      <div class="q-block"><span class="q-num">16.</span>
+        <div class="q-text" data-q="fill_5">Trombotsitlar faollashganda vuzikulalardan <span class="fill-line"><input class="gap-input" data-ans="adx" placeholder="___________"></span> va seratonin moddalari ajratiladi.</div></div>
+      <div class="q-block"><span class="q-num">17.</span>
+        <div class="q-text" data-q="fill_6">Qon trombini muddatidan oldin kattalashib ketishini oldini olib, sekin parchalab yuboruvchi tizim <span class="fill-line"><input class="gap-input" data-ans="fibrinoliz" placeholder="___________"></span> deb ataladi.</div></div>
+      <div class="q-block"><span class="q-num">18.</span>
+        <div class="q-text" data-q="fill_7">Shikastlanish paytida ajraladigan omil – To'qima faktori (III omil) ivish jarayonining <span class="fill-line"><input class="gap-input" data-ans="tashqi" placeholder="___________"></span> yo'lini boshlaydi.</div></div>
+      <div class="q-block"><span class="q-num">19.</span>
+        <div class="q-text" data-q="fill_8">XIII omil fibrin tolalari orasida kovalent bog' hosil qilib, to'rni <span class="fill-line"><input class="gap-input" data-ans="stabillashtiradi" placeholder="___________"></span>.</div></div>
+      <div class="q-block"><span class="q-num">20.</span>
+        <div class="q-text" data-q="fill_9">Jigarda sintezlanuvchi II, VII, IX va <span class="fill-line"><input class="gap-input" data-ans="x" placeholder="___________"></span> omillarining faol shaklga kelishida Vitamin K zarur.</div></div>
+    </div>
+
+    <!-- SECTION C -->
+    <div class="section">
+      <div class="section-header"><span class="section-badge badge-short">C qism</span><span class="section-title">Qisqa javob (1–2 so'z)</span><span class="section-pts">10 × 1.5 ball = 15</span></div><br>
+      
+      <div class="q-block"><span class="q-num">21.</span>
+        <div><div class="q-text">Kislorodni tashishga qodir bo'lishi uchun Gem tarkibidagi temir atomi qanday valentli bo'lishi kerak?</div>
+        <div class="answer-box"><span class="answer-label">Javob:</span><input class="answer-input" data-ans="2 valentli" placeholder="yozing..."></div></div>
+      </div>
+      
+      <div class="q-block"><span class="q-num">22.</span>
+        <div><div class="q-text">Gepsidin gormoni qaysi a'zoda sintezlanib qonga ajraladi?</div>
+        <div class="answer-box"><span class="answer-label">Javob:</span><input class="answer-input" data-ans="jigar" placeholder="yozing..."></div></div>
+      </div>
+      
+      <div class="q-block"><span class="q-num">23.</span>
+        <div><div class="q-text">Fibrinoliz asosiy fermenti bo'lgan Plazminning proferment (faolmas) holati nima deb ataladi?</div>
+        <div class="answer-box"><span class="answer-label">Javob:</span><input class="answer-input" data-ans="plazminogen" placeholder="yozing..."></div></div>
+      </div>
+      
+      <div class="q-block"><span class="q-num">24.</span>
+        <div><div class="q-text">Trombotsitlarning qonda yashash davri o'rtacha necha kun?</div>
+        <div class="answer-box"><span class="answer-label">Javob:</span><input class="answer-input" data-ans="7-10 kun" placeholder="yozing..."></div></div>
+      </div>
+      
+      <div class="q-block"><span class="q-num">25.</span>
+        <div><div class="q-text">Qon tomir shikastlanganda darhol birinchi bo'lib qanday refleksiv / maxalliy reaksiya yuzaga keladi?</div>
+        <div class="answer-box"><span class="answer-label">Javob:</span><input class="answer-input" data-ans="spazm" placeholder="yozing..."></div></div>
+      </div>
+      
+      <div class="q-block"><span class="q-num">26.</span>
+        <div><div class="q-text">Fibrin qon pıhtısını o'zaro choklab mustahkamlaydigan oxirgi qon ivish omili nechanchi?</div>
+        <div class="answer-box"><span class="answer-label">Javob:</span><input class="answer-input" data-ans="13" placeholder="yozing..."></div></div>
+      </div>
+      
+      <div class="q-block"><span class="q-num">27.</span>
+        <div><div class="q-text">Aspirin qaysi modda sintezini ingibirlab, trombotsitlar agregatsiyasini pasaytiradi?</div>
+        <div class="answer-box"><span class="answer-label">Javob:</span><input class="answer-input" data-ans="tromboksan" placeholder="yozing..."></div></div>
+      </div>
+      
+      <div class="q-block"><span class="q-num">28.</span>
+        <div><div class="q-text">Kaltsiy ioni gemostaz kaskadida koofaktor sifatida juda muhim, u nechanchi omil sifatida raqamlangan?</div>
+        <div class="answer-box"><span class="answer-label">Javob:</span><input class="answer-input" data-ans="4" placeholder="yozing..."></div></div>
+      </div>
+      
+      <div class="q-block"><span class="q-num">29.</span>
+        <div><div class="q-text">Surunkali temir yetishmovchiligida qanday morfologik turdagi (hujayra hajmi kichraygan) anemiya kelib chiqadi?</div>
+        <div class="answer-box"><span class="answer-label">Javob:</span><input class="answer-input" data-ans="mikrositar" placeholder="yozing..."></div></div>
+      </div>
+      
+      <div class="q-block"><span class="q-num">30.</span>
+        <div><div class="q-text">Anti-trombin III ni faollashtirib qon ivishiga to'sqinlik qiluvchi fiziologik yoki dorivor modda nima?</div>
+        <div class="answer-box"><span class="answer-label">Javob:</span><input class="answer-input" data-ans="geparin" placeholder="yozing..."></div></div>
+      </div>
+    </div>
+
+    <!-- SECTION D -->
+    <div class="section">
+      <div class="section-header"><span class="section-badge badge-tf">D qism</span><span class="section-title">To'g'ri / Noto'g'ri</span><span class="section-pts">7 × 1 ball = 7</span></div>
+
+      <div class="tf-row"><span class="q-num">31.</span><div class="q-text">Transferrin temirni hujayra ichida zahira qilib saqlovchi asosiy ombor oqsilidir.</div><div class="tf-btns"><button class="tf-btn T" data-tf="31">T</button><button class="tf-btn F" data-tf="31">F</button></div></div>
+      
+      <div class="tf-row"><span class="q-num">32.</span><div class="q-text">Trombotsitlar suyak iligida yadroga ega bo'lmay qolgan megakariotsit parchalari hisoblanadi.</div><div class="tf-btns"><button class="tf-btn T" data-tf="32">T</button><button class="tf-btn F" data-tf="32">F</button></div></div>
+      
+      <div class="tf-row"><span class="q-num">33.</span><div class="q-text">Qon ivishining tezkor (tashqi) yo'li XII omil bilan, kontakt orqali boshlanadi.</div><div class="tf-btns"><button class="tf-btn T" data-tf="33">T</button><button class="tf-btn F" data-tf="33">F</button></div></div>
+      
+      <div class="tf-row"><span class="q-num">34.</span><div class="q-text">Oziq-ovqatdan olinadigan temir asosan ingichka ichakning o'n ikki barmoqli (duodenum) qismida so'riladi.</div><div class="tf-btns"><button class="tf-btn T" data-tf="34">T</button><button class="tf-btn F" data-tf="34">F</button></div></div>
+      
+      <div class="tf-row"><span class="q-num">35.</span><div class="q-text">Qon ivish kaskadi fermentlari qonda doimo faol holatda aylanib yuradi.</div><div class="tf-btns"><button class="tf-btn T" data-tf="35">T</button><button class="tf-btn F" data-tf="35">F</button></div></div>
+      
+      <div class="tf-row"><span class="q-num">36.</span><div class="q-text">Gemofiliya A kasalligida asosan VIII omil (8-omil) yetishmovchiligi kuzatiladi.</div><div class="tf-btns"><button class="tf-btn T" data-tf="36">T</button><button class="tf-btn F" data-tf="36">F</button></div></div>
+      
+      <div class="tf-row"><span class="q-num">37.</span><div class="q-text">Taloq va jigardagi makrofaglar qarigan eritrotsitlarni parchalab, temirni qonga qaytaradi.</div><div class="tf-btns"><button class="tf-btn T" data-tf="37">T</button><button class="tf-btn F" data-tf="37">F</button></div></div>
+    </div>
+
+    <!-- SECTION E -->
+    <div class="section">
+      <div class="section-header"><span class="section-badge badge-match">E qism</span><span class="section-title">Moslashtiring</span><span class="section-pts">8 × 1 ball = 8</span></div><br>
+      <div class="match-grid">
+        <div class="match-left"><strong>Ferritin</strong></div><div class="match-connector">→</div><div><select class="match-select" data-ma="t1" data-ans="A"><option value="">— tanlang —</option><option value="A">A: Temirning to'qimalardagi zahira oqsili</option><option value="B">B: Temir so'rilishini pasaytiruvchi gormon</option><option value="C">C: Qonda temirni tashuvchi transport oqsil</option><option value="D">D: Temirni hujayradan eksport qiluvchi kanal</option><option value="E">E: Trombotsitlarni kollagenga bog'lovchi omil</option><option value="F">F: Fibrin polimerining passiv monomeri</option><option value="G">G: Fibrinoliz fermentining proferment shakli</option><option value="H">H: Tashqi ivish yo'lini boshlovchi omil</option></select></div>
+        <div class="match-left"><strong>Gepsidin</strong></div><div class="match-connector">→</div><div><select class="match-select" data-ma="t2" data-ans="B"><option value="">— tanlang —</option><option value="A">A: Temirning to'qimalardagi zahira oqsili</option><option value="B">B: Temir so'rilishini pasaytiruvchi gormon</option><option value="C">C: Qonda temirni tashuvchi transport oqsil</option><option value="D">D: Temirni hujayradan eksport qiluvchi kanal</option><option value="E">E: Trombotsitlarni kollagenga bog'lovchi omil</option><option value="F">F: Fibrin polimerining passiv monomeri</option><option value="G">G: Fibrinoliz fermentining proferment shakli</option><option value="H">H: Tashqi ivish yo'lini boshlovchi omil</option></select></div>
+        <div class="match-left"><strong>Transferrin</strong></div><div class="match-connector">→</div><div><select class="match-select" data-ma="t3" data-ans="C"><option value="">— tanlang —</option><option value="A">A: Temirning to'qimalardagi zahira oqsili</option><option value="B">B: Temir so'rilishini pasaytiruvchi gormon</option><option value="C">C: Qonda temirni tashuvchi transport oqsil</option><option value="D">D: Temirni hujayradan eksport qiluvchi kanal</option><option value="E">E: Trombotsitlarni kollagenga bog'lovchi omil</option><option value="F">F: Fibrin polimerining passiv monomeri</option><option value="G">G: Fibrinoliz fermentining proferment shakli</option><option value="H">H: Tashqi ivish yo'lini boshlovchi omil</option></select></div>
+        <div class="match-left"><strong>Ferroportin</strong></div><div class="match-connector">→</div><div><select class="match-select" data-ma="t4" data-ans="D"><option value="">— tanlang —</option><option value="A">A: Temirning to'qimalardagi zahira oqsili</option><option value="B">B: Temir so'rilishini pasaytiruvchi gormon</option><option value="C">C: Qonda temirni tashuvchi transport oqsil</option><option value="D">D: Temirni hujayradan eksport qiluvchi kanal</option><option value="E">E: Trombotsitlarni kollagenga bog'lovchi omil</option><option value="F">F: Fibrin polimerining passiv monomeri</option><option value="G">G: Fibrinoliz fermentining proferment shakli</option><option value="H">H: Tashqi ivish yo'lini boshlovchi omil</option></select></div>
+        <div class="match-left"><strong>Fon Villebrand omili</strong></div><div class="match-connector">→</div><div><select class="match-select" data-ma="t5" data-ans="E"><option value="">— tanlang —</option><option value="A">A: Temirning to'qimalardagi zahira oqsili</option><option value="B">B: Temir so'rilishini pasaytiruvchi gormon</option><option value="C">C: Qonda temirni tashuvchi transport oqsil</option><option value="D">D: Temirni hujayradan eksport qiluvchi kanal</option><option value="E">E: Trombotsitlarni kollagenga bog'lovchi omil</option><option value="F">F: Fibrin polimerining passiv monomeri</option><option value="G">G: Fibrinoliz fermentining proferment shakli</option><option value="H">H: Tashqi ivish yo'lini boshlovchi omil</option></select></div>
+        <div class="match-left"><strong>Fibrinogen</strong></div><div class="match-connector">→</div><div><select class="match-select" data-ma="t6" data-ans="F"><option value="">— tanlang —</option><option value="A">A: Temirning to'qimalardagi zahira oqsili</option><option value="B">B: Temir so'rilishini pasaytiruvchi gormon</option><option value="C">C: Qonda temirni tashuvchi transport oqsil</option><option value="D">D: Temirni hujayradan eksport qiluvchi kanal</option><option value="E">E: Trombotsitlarni kollagenga bog'lovchi omil</option><option value="F">F: Fibrin polimerining passiv monomeri</option><option value="G">G: Fibrinoliz fermentining proferment shakli</option><option value="H">H: Tashqi ivish yo'lini boshlovchi omil</option></select></div>
+        <div class="match-left"><strong>Plazminogen</strong></div><div class="match-connector">→</div><div><select class="match-select" data-ma="t7" data-ans="G"><option value="">— tanlang —</option><option value="A">A: Temirning to'qimalardagi zahira oqsili</option><option value="B">B: Temir so'rilishini pasaytiruvchi gormon</option><option value="C">C: Qonda temirni tashuvchi transport oqsil</option><option value="D">D: Temirni hujayradan eksport qiluvchi kanal</option><option value="E">E: Trombotsitlarni kollagenga bog'lovchi omil</option><option value="F">F: Fibrin polimerining passiv monomeri</option><option value="G">G: Fibrinoliz fermentining proferment shakli</option><option value="H">H: Tashqi ivish yo'lini boshlovchi omil</option></select></div>
+        <div class="match-left"><strong>To'qima faktori (III)</strong></div><div class="match-connector">→</div><div><select class="match-select" data-ma="t8" data-ans="H"><option value="">— tanlang —</option><option value="A">A: Temirning to'qimalardagi zahira oqsili</option><option value="B">B: Temir so'rilishini pasaytiruvchi gormon</option><option value="C">C: Qonda temirni tashuvchi transport oqsil</option><option value="D">D: Temirni hujayradan eksport qiluvchi kanal</option><option value="E">E: Trombotsitlarni kollagenga bog'lovchi omil</option><option value="F">F: Fibrin polimerining passiv monomeri</option><option value="G">G: Fibrinoliz fermentining proferment shakli</option><option value="H">H: Tashqi ivish yo'lini boshlovchi omil</option></select></div>
+      </div>
+    </div>
+
+    <!-- Action bar -->
+    <div class="action-bar">
+      <button class="btn-check" onclick="checkAll()">✓ Javoblarni tekshirish</button>
+      <button class="btn-reset" onclick="resetAll()">↺ Qayta boshlash</button>
+    </div>
+
+    <div class="result-card" id="result-card">
+      <div style="display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;">
+        <span class="result-score" id="score-display">0 / 50</span>
+        <span class="result-detail" id="score-pct"></span>
+      </div>
+      <div class="result-detail" id="score-breakdown" style="margin-top:8px;"></div>
+    </div>
+
+  </div> <!-- End of quiz-content -->
+</div> <!-- End of page -->
+
+<script>
+const EXPLANATIONS = {
+  'm1': "Javob A: Organizmda eng ko'p temir (65-70%) gemoglobin tarkibida joylashgan.",
+  'm2': "Javob B: Transferrin qondagi uch valentli temir (Fe3+) ni a'zolarga tashiydi.",
+  'm3': "Javob B: Gepsidin jigar tomonidan ishlab chiqarilib, ferroportinni parchalaydi va qonga temir so'rilishini to'xtatadi.",
+  'm4': "Javob B: Birlamchi gemostaz asosan shikastlangan tomir yuzasi (kollagen) va trombotsitlar o'zaro adgeziyasi bilan kechadi.",
+  'm5': "Javob A: Suyak iligidagi yirik megakariotsitlarning sitoplazmatik qismlari parchalanishi tufayli trombotsitlar hosil bo'ladi.",
+  'm6': "Javob C: Qonning ichki yo'li XII omil manfiy zaryadli sirtga tekkanda boshlanadi.",
+  'm7': "Javob A: Xa, Va omillar, fosfolipid hamda Ca ioni birgalikda Protrombinaza kompleksini hosil qiladi.",
+  'm8': "Javob B: Trombotsit GP Ib retseptori orqali Fon Villebrand omiliga yopishadi.",
+  'm9': "Javob B: Ikkilamchi gemostaz kaskadi natijasida oxir-oqibat erimaydigan fibrin polimer (to'r) shakllanadi.",
+  'm10': "Javob C: Plazminogen t-PA moddasi ishtirokida plazminga aktivlashadi, va plazmin fibrinni parchalaydi.",
+  
+  'fill_0': "Javob: Ferritin asosan jigar hujayralari va makrofaglarda saqlanuvchi globular oqsildir.",
+  'fill_1': "Javob: Ferroportin enterotsitlarda bazal membranadan qonga temirni chiquvchi eshik vazifasini o'taydi.",
+  'fill_2': "Javob: Fon Villebrand omili endoteliy zaryadli qismlariga birikkan holda namoyon bo'ladi.",
+  'fill_3': "Javob: Ham tashqi ham ichki kaskad o'n qadam o'tgach, X omilga kelib qo'shiladi va u Umumiy kaskadga o'tadi.",
+  'fill_4': "Javob: Trombin protrombindan aktivlashib, I omil bo'lgan fibrinogenga ta'sir ko'rsatadi.",
+  'fill_5': "Javob: ADX (Adenozin difosfat) va tromboksan A2 bular agregatsiya uchun signaldir.",
+  'fill_6': "Javob: Fibrinoliz tromblarni hosil bo'lishidan himoya qiladi va uni parchalaydi.",
+  'fill_7': "Javob: Tashqi yo'l shikaslangan to'qimalardan hosil bo'ladigan VII omil bilan boshlanadi.",
+  'fill_8': "Javob: XIII omil Fibrin stabillashtiruvchi omil deyiladi va to'rlarni mustahkam kovalent bog'ga yopishtiradi.",
+  'fill_9': "Javob: Vitamin K ga bog'liq omillar II, VII, IX, X hisoblanadi.",
+  
+  'sh_0': "To'g'ri: Kislorod biriktirish xususiyati uchun gem tarkibida faqatgina 2-valentli Fe2+ ustun bo'ladi.",
+  'sh_1': "To'g'ri: Organizm temirga to'nganda, jigar Gepsidin gormonini ajratib barcha kirish joylarini bloklaydi.",
+  'sh_2': "To'g'ri: Plazminogen doimo qonda harakatlanib yuradi, va vaqti kelganida plazminga o'tadi.",
+  'sh_3': "To'g'ri: Trombotsitlar uzoq yashamaydi, o'rtacha umri 7-10 kun.",
+  'sh_4': "To'g'ri: Spazm (ayniqsa, Neyrogen spazm) dastlabki qon oqishini kamaytiradi.",
+  'sh_5': "To'g'ri: 13 (XIII) omil Fibrin stabillashtiruvchi omildir.",
+  'sh_6': "To'g'ri: Aspirin COX fermentini to'xtatgach Tromboksan hosil bo'lishini ingibirlaydi.",
+  'sh_7': "To'g'ri: Kaltsiy juda muhim aktivlovchi komponent va u IV omil hisoblanadi.",
+  'sh_8': "To'g'ri: Temir atomi yetishmasa hujayralar kichrayib mikrositar anemiya beradi.",
+  'sh_9': "To'g'ri: Geparin anti-trombin III ni ishga tushiruvchi antikoagulyantdir.",
+
+  '31': "Xato: Transferrin tashuvchidir. Temir asosan Ferritin shaklida saqlanadi.",
+  '32': "To'g'ri: Ular megakariotsitlardan uzilib chiqqan sitoplazma qismlaridir.",
+  '33': "Xato: XII omil Ichki yo'lni boshlaydi. Tashqi yo'l III-omil (to'qima faktori) dan boshlanadi.",
+  '34': "To'g'ri: Aynan o'n ikki barmoqli ichak (duodenum) temir so'riladigan asosiy joydir.",
+  '35': "Xato: Ular muddatidan oldin qotib qolmasligi uchun aktiv bo'lmagan PROFERMENT shaklida yuradi.",
+  '36': "To'g'ri: Gemofiliya A kasalligida aynan VIII omil sintezlanmaydi.",
+  '37': "To'g'ri: Makrofaglar eskirgan eritrotsitlarni ichida parchalab temirni qonga yuboradi.",
+  
+  't1': "Ferritin - Temirning to'qimalardagi zahira oqsili (A).",
+  't2': "Gepsidin - Temir so'rilishini pasaytiruvchi gormon (B).",
+  't3': "Transferrin - Qonda temirni tashuvchi transport oqsil (C).",
+  't4': "Ferroportin - Temir hujayradan chiqadigan eksport kanali (D).",
+  't5': "Fon Villebrand omili - Trombotsitlarni kollagenga bog'lovchi omil (E).",
+  't6': "Fibrinogen - Fibrin polimerining passiv monomer (F).",
+  't7': "Plazminogen - Fibrinoliz fermentining proferment shakli (G).",
+  't8': "To'qima faktori (III) - Tashqi ivish yo'lini boshlovchi omil (H)."
+};
+
+function renderExp(blockEl, isOk, expText) {
+  let expDiv = blockEl.querySelector('.explanation');
+  if(!expDiv) {
+    expDiv = document.createElement('div');
+    expDiv.className = 'explanation';
+    blockEl.appendChild(expDiv);
+  }
+  expDiv.style.display = 'block';
+  expDiv.className = 'explanation ' + (isOk ? 'correct' : 'wrong');
+  expDiv.innerHTML = '<strong>' + (isOk ? 'To\'g\'ri! ' : 'Xato! ') + '</strong>' + expText;
+}
+
+document.getElementById('student-date').value = new Date().toLocaleDateString('uz-UZ', { year: 'numeric', month: '2-digit', day: '2-digit' });
+
+let timerInterval;
+document.getElementById('btn-start').addEventListener('click', () => {
+  const iName = document.getElementById('student-name');
+  const iGroup = document.getElementById('student-group');
+  const err = document.getElementById('start-error');
+
+  if (!iName.value.trim() || !iGroup.value.trim()) {
+    err.style.display = 'block';
+    return;
+  }
+  err.style.display = 'none';
+  iName.setAttribute('readonly', 'true');
+  iGroup.setAttribute('readonly', 'true');
+
+  document.getElementById('start-container').style.display = 'none';
+  const content = document.getElementById('quiz-content');
+  content.style.display = 'block';
+  setTimeout(() => { content.style.opacity = '1'; }, 50);
+
+  startQuiz();
+});
+
+function startQuiz() {
+  let timeLeft = 40 * 60;
+  timerInterval = setInterval(() => {
+    if(timeLeft <= 0) {
+      clearInterval(timerInterval);
+      document.getElementById('timer-display').textContent = "00:00";
+      alert("Vaqt tugadi! Javoblaringiz avtomatik tekshiriladi.");
+      checkAll();
+      return;
+    }
+    timeLeft--;
+    const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+    const s = (timeLeft % 60).toString().padStart(2, '0');
+    document.getElementById('timer-display').textContent = `${m}:${s}`;
+    if(timeLeft <= 300) {
+      document.getElementById('timer-display').style.color = 'var(--red)';
+    }
+  }, 1000);
+}
+
+const MCQ_ANSWERS = {m1:'A',m2:'B',m3:'B',m4:'B',m5:'A',m6:'C',m7:'A',m8:'B',m9:'B',m10:'C'};
+const TF_ANSWERS  = {31:false,32:true,33:false,34:true,35:false,36:true,37:true};
+const GAP_ANSWERS = {0:'ferritin',1:'ferroportin',2:'fon villebrand',3:'x',4:'trombin',5:'adx',6:'fibrinoliz',7:'tashqi',8:'stabillashtiradi',9:'x'};
+
+let mcqSelected = {};
+let tfSelected  = {};
+
+document.querySelectorAll('.opt').forEach(opt => {
+  opt.addEventListener('click', () => {
+    const q = opt.dataset.q;
+    document.querySelectorAll(`.opt[data-q="${q}"]`).forEach(o => o.classList.remove('selected'));
+    opt.classList.add('selected');
+    mcqSelected[q] = opt.dataset.v;
+  });
+});
+
+document.querySelectorAll('.tf-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const q = btn.dataset.tf;
+    document.querySelectorAll(`.tf-btn[data-tf="${q}"]`).forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    tfSelected[q] = btn.classList.contains('T');
+  });
+});
+
+function normalize(s){ return s.trim().toLowerCase().replace(/['-]/g,' '); }
+
+function checkAll(){
+  let total = 0;
+  let mcqScore=0, fillScore=0, shortScore=0, tfScore=0, matchScore=0;
+
+  clearInterval(timerInterval);
+
+  // MCQ
+  document.querySelectorAll('.opt').forEach(o => o.classList.remove('correct','wrong'));
+  Object.entries(MCQ_ANSWERS).forEach(([q,ans])=>{
+    const sel = mcqSelected[q];
+    let isCorrect = false;
+    document.querySelectorAll(`.opt[data-q="${q}"]`).forEach(o=>{
+      if(o.dataset.v === ans) o.classList.add('correct');
+      else if(o.dataset.v === sel && sel !== ans) o.classList.add('wrong');
+    });
+    if(sel === ans){ mcqScore += 1; isCorrect = true; }
+    
+    const blockEl = document.querySelector(`.opt[data-q="${q}"]`).closest('div').parentElement.parentElement;
+    renderExp(blockEl, isCorrect, EXPLANATIONS[q]);
+  });
+
+  // Fill gap
+  document.querySelectorAll('.gap-input').forEach((inp, i)=>{
+    inp.classList.remove('correct','wrong');
+    const ans = GAP_ANSWERS[i] || '';
+    const val = normalize(inp.value);
+    const isOk = val.includes(normalize(ans)) || normalize(ans).includes(val) && val.length>=1;
+    if(isOk){ inp.classList.add('correct'); fillScore += 1; }
+    else if(inp.value.trim()) inp.classList.add('wrong');
+    else inp.classList.add('wrong');
+
+    const blockEl = inp.closest('.q-block');
+    renderExp(blockEl, isOk, EXPLANATIONS['fill_'+i]);
+  });
+
+  // Short answer
+  const SHORT_ANS = ['2 valentli','jigar','plazminogen','7','spazm','13','tromboksan','4','mikrositar','geparin'];
+  document.querySelectorAll('.answer-input').forEach((inp, i)=>{
+    inp.classList.remove('correct','wrong');
+    const expected = normalize(SHORT_ANS[i]||'');
+    const given    = normalize(inp.value);
+    let isOk = false;
+    if(given && (given.includes(expected.split(' ')[0]) || expected.includes(given.split(' ')[0]))){
+      inp.classList.add('correct'); shortScore += 1.5; isOk = true;
+    } else {
+      inp.classList.add('wrong');
+    }
+
+    const blockEl = inp.closest('.q-block');
+    renderExp(blockEl, isOk, EXPLANATIONS['sh_'+i]);
+  });
+
+  // T/F
+  document.querySelectorAll('.tf-btn').forEach(b=>{b.classList.remove('correct','wrong');});
+  Object.entries(TF_ANSWERS).forEach(([q,ans])=>{
+    const sel = tfSelected[q];
+    let isOk = false;
+    if(sel !== undefined) {
+      if(sel === ans) { isOk = true; tfScore += 1; }
+      document.querySelectorAll(`.tf-btn[data-tf="${q}"]`).forEach(b=>{
+        if((b.classList.contains('T') && ans) || (b.classList.contains('F') && !ans)){
+          b.classList.add('correct');
+        }
+        if(b.classList.contains('active') && !isOk){ b.classList.add('wrong'); }
+      });
+    } else {
+      document.querySelectorAll(`.tf-btn[data-tf="${q}"]`).forEach(b=>{
+        if((b.classList.contains('T') && ans) || (b.classList.contains('F') && !ans)){
+          b.classList.add('correct');
+        }
+      });
+    }
+
+    const firstBtn = document.querySelector(`.tf-btn[data-tf="${q}"]`);
+    if(firstBtn) {
+      const blockEl = firstBtn.closest('.tf-row');
+      renderExp(blockEl, isOk, EXPLANATIONS[q]);
+    }
+  });
+
+  // Matching
+  document.querySelectorAll('.match-select').forEach((sel)=>{
+    sel.classList.remove('correct','wrong');
+    const ans = sel.dataset.ans;
+    const qKey = sel.dataset.ma;
+    let isOk = false;
+    if(sel.value === ans){ sel.classList.add('correct'); matchScore += 1; isOk = true; }
+    else sel.classList.add('wrong');
+
+    const blockEl = sel.parentElement;
+    renderExp(blockEl, isOk, EXPLANATIONS[qKey]);
+  });
+
+  total = mcqScore + fillScore + shortScore + tfScore + matchScore;
+  const pct = Math.round(total/50*100);
+
+  const card = document.getElementById('result-card');
+  card.classList.add('visible');
+  document.getElementById('score-display').textContent = `${total.toFixed(1)} / 50 ball`;
+  document.getElementById('score-pct').textContent = `${pct}% — ${pct>=90 ? "A'lo" : pct>=75 ? 'Yaxshi' : pct>=60 ? 'Qoniqarli' : 'Qayta urining'}`;
+  document.getElementById('score-breakdown').textContent =
+    `A: ${mcqScore}/10 · B: ${fillScore}/10 · C: ${shortScore.toFixed(1)}/15 · D: ${tfScore}/7 · E: ${matchScore}/8`;
+
+  card.scrollIntoView({behavior:'smooth', block:'nearest'});
+
+  if (window.parent) {
+    window.parent.postMessage({
+        type: 'WORKSHEET_COMPLETED',
+        scorePct: pct,
+        scoreTotal: total,
+        maxScore: 50
+    }, '*');
+  }
+}
+
+function resetAll(){
+  mcqSelected={}; tfSelected={};
+  document.querySelectorAll('.opt').forEach(o=>o.classList.remove('selected','correct','wrong'));
+  document.querySelectorAll('.gap-input').forEach(i=>{i.value='';i.classList.remove('correct','wrong');});
+  document.querySelectorAll('.answer-input').forEach(i=>{i.value='';i.classList.remove('correct','wrong');});
+  document.querySelectorAll('.tf-btn').forEach(b=>b.classList.remove('active','correct','wrong'));
+  document.querySelectorAll('.match-select').forEach(s=>{s.value='';s.classList.remove('correct','wrong');});
+  document.querySelectorAll('.explanation').forEach(e => { e.style.display = 'none'; });
+  document.getElementById('result-card').classList.remove('visible');
+}
+</script>
+</body></html>

@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Onkogenez &mdash; Work Sheet</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Libre+Baskerville:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f5f3ef;--sur:#fff;--ink:#15130e;--ink2:#46413a;--ink3:#908a82;
+  --ac:#7c1d1d;--acl:#fff1f1;
+  --gr:#14532d;--gl:#f0fdf4;
+  --am:#78350f;--al:#fffbeb;
+  --bl:#1e3a8a;--bll:#eff6ff;
+  --pu:#4c1d95;--pul:#f5f3ff;
+  --te:#134e4a;--tel:#f0fdfa;
+  --or:#7c2d12;--orl:#fff7ed;
+  --bo:#e2dbd2;--b2:#c8c0b4;
+}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.6;padding:2rem 1rem 5rem}
+.page{max-width:800px;margin:0 auto}
+
+.header{border-bottom:3px solid var(--ink);padding-bottom:1.25rem;margin-bottom:1.5rem}
+.stag{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--ac);margin-bottom:5px;display:block}
+.header h1{font-family:'Libre Baskerville',serif;font-size:21px;font-weight:700;line-height:1.25;margin-bottom:.75rem}
+.mr{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:.75rem}
+.mb{border:1px solid var(--b2);border-radius:6px;padding:7px 11px}
+.mb label{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);display:block;margin-bottom:3px;font-family:'IBM Plex Mono',monospace}
+.mb .ln{border-bottom:1px solid var(--b2);height:18px}
+
+.ban{background:var(--ink);color:#fff;border-radius:8px;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;font-size:13px;flex-wrap:wrap;gap:8px}
+.ban strong{font-family:'IBM Plex Mono',monospace;font-size:14px}
+
+.tdiv{display:flex;align-items:center;gap:10px;margin:2rem 0 1.1rem}
+.tnum{font-family:'IBM Plex Mono',monospace;font-size:10px;background:var(--ac);color:#fff;padding:3px 9px;border-radius:4px;letter-spacing:.06em;white-space:nowrap}
+.ttitle{font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;border-bottom:1.5px dotted var(--b2);flex:1;padding-bottom:3px}
+
+.tmi-div{display:flex;align-items:center;gap:10px;margin:2rem 0 1.1rem}
+.tmi-badge{font-family:'IBM Plex Mono',monospace;font-size:10px;background:var(--or);color:#fff;padding:3px 9px;border-radius:4px;letter-spacing:.06em;white-space:nowrap}
+
+.sec{margin-bottom:1.8rem}
+.sh{display:flex;align-items:center;gap:9px;margin-bottom:.85rem;padding-bottom:7px;border-bottom:1.5px solid var(--bo);flex-wrap:wrap}
+.sb{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;padding:3px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
+.bm{background:var(--bll);color:var(--bl)} .bf{background:var(--gl);color:var(--gr)}
+.bs{background:var(--pul);color:var(--pu)} .bt{background:var(--al);color:var(--am)}
+.bx{background:var(--acl);color:var(--ac)} .bo2{background:var(--orl);color:var(--or)}
+.stitle{font-size:14px;font-weight:600}
+.spts{margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink3);white-space:nowrap}
+
+.qb{display:grid;grid-template-columns:26px 1fr;gap:7px;margin-bottom:1rem;align-items:start}
+.qn{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink3);padding-top:2px;font-weight:500}
+.qt{font-size:13.5px;line-height:1.55}
+
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:7px}
+.opt{border:1px solid var(--bo);border-radius:6px;padding:7px 10px;font-size:12.5px;display:flex;align-items:flex-start;gap:8px;background:var(--sur);cursor:pointer;transition:border-color .13s,background .13s;user-select:none;line-height:1.4}
+.opt:hover{border-color:var(--b2);background:var(--bg)}
+.opt.sel{border-color:var(--bl);background:var(--bll)}
+.opt.ok {border-color:var(--gr);background:var(--gl)}
+.opt.no {border-color:var(--ac);background:var(--acl)}
+.ol{font-family:'IBM Plex Mono',monospace;font-size:11px;min-width:18px;height:18px;border-radius:3px;background:var(--bo);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:500;margin-top:1px;transition:background .13s,color .13s}
+.opt.sel .ol{background:var(--bl);color:#fff}
+.opt.ok .ol{background:var(--gr);color:#fff}
+.opt.no .ol{background:var(--ac);color:#fff}
+
+.gi{border:none;border-bottom:1.5px solid var(--b2);background:transparent;font-family:'Plus Jakarta Sans',sans-serif;font-size:13.5px;color:var(--ink);width:150px;padding:1px 4px;text-align:center;outline:none;transition:border-color .13s;vertical-align:middle}
+.gi:focus{border-color:var(--bl)}.gi.ok{border-color:var(--gr);color:var(--gr);font-weight:500}.gi.no{border-color:var(--ac);color:var(--ac)}
+
+.ab{border:1px solid var(--bo);border-radius:6px;background:var(--sur);margin-top:7px;display:flex;align-items:center;gap:8px;padding:5px 10px}
+.al2{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink3);white-space:nowrap;text-transform:uppercase;letter-spacing:.06em}
+.ai{border:none;border-bottom:1px solid var(--b2);background:transparent;font-family:'Plus Jakarta Sans',sans-serif;font-size:13.5px;flex:1;outline:none;color:var(--ink);padding:1px 2px}
+.ai:focus{border-color:var(--bl)}.ai.ok{border-color:var(--gr);color:var(--gr)}.ai.no{border-color:var(--ac);color:var(--ac)}
+
+.tfr{display:grid;grid-template-columns:26px 1fr auto;gap:7px 10px;align-items:center;padding:8px 10px;border-radius:6px;border:1px solid var(--bo);background:var(--sur);margin-bottom:6px}
+.tbs{display:flex;gap:5px}
+.tfb{font-family:'IBM Plex Mono',monospace;font-size:11px;padding:4px 10px;border:1px solid var(--bo);border-radius:4px;cursor:pointer;background:var(--bg);color:var(--ink2);transition:all .12s;font-weight:500}
+.tfb.T.active{background:var(--gl);border-color:var(--gr);color:var(--gr)}
+.tfb.F.active{background:var(--acl);border-color:var(--ac);color:var(--ac)}
+.tfb.correct{background:var(--gl);border-color:var(--gr);color:var(--gr)}
+.tfb.wrong{background:var(--acl);border-color:var(--ac);color:var(--ac)}
+
+.mg{display:grid;grid-template-columns:1fr auto 1fr;gap:7px 10px;align-items:center}
+.ml{border:1px solid #c4b5fd;border-radius:6px;padding:7px 11px;background:var(--pul);font-size:12.5px;font-weight:500;line-height:1.35}
+.mc2{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink3);text-align:center}
+.ms{border:1px solid var(--b2);border-radius:4px;padding:5px 7px;font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;background:var(--sur);color:var(--ink);outline:none;cursor:pointer;width:100%}
+.ms:focus{border-color:var(--bl)}.ms.ok{border-color:var(--gr);background:var(--gl);color:var(--gr)}.ms.no{border-color:var(--ac);background:var(--acl);color:var(--ac)}
+
+.acbar{display:flex;gap:10px;margin-top:2.5rem;padding-top:1.5rem;border-top:2px solid var(--bo);flex-wrap:wrap}
+.bchk{background:var(--ink);color:#fff;border:none;border-radius:6px;padding:10px 22px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:opacity .15s}
+.bchk:hover{opacity:.85}
+.brst{background:transparent;color:var(--ink2);border:1px solid var(--b2);border-radius:6px;padding:10px 20px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;cursor:pointer}
+.rcard{border:1.5px solid var(--bo);border-radius:8px;padding:1rem 1.25rem;background:var(--sur);margin-top:1rem;display:none}
+.rcard.vis{display:block}
+.rscore{font-family:'Libre Baskerville',serif;font-size:26px;font-weight:700}
+.rdet{font-size:13px;color:var(--ink2);margin-top:4px}
+.hint{font-size:12px;color:var(--ink3);font-style:italic;margin-bottom:.5rem}
+
+/* sequence fill */
+.seq-box{background:var(--sur);border:1px solid var(--bo);border-radius:8px;padding:1rem 1.25rem;margin-top:8px;font-size:13px;line-height:2.2}
+
+@media print {
+    body { background: white; }
+    .acbar, #start-container { display: none; }
+    #quiz-content { display: block !important; opacity: 1 !important; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HEADER -->
+<div class="header">
+  <span class="stag">Onkogenez · Kimyoviy Kanserogenez · TMI</span>
+  <h1>Onkogenez. Kanserogenez mexanizmlari.<br>O'sma biologiyasi. Tashhis va Davolash.</h1>
+  <div class="mr">
+    <div class="mb"><label>Familiya, Ism</label><input type="text" id="student-name" class="gi" style="width: 100%; border: none; outline: none; background: transparent; padding: 0;" placeholder="Ism familiya" autocomplete="off" /></div>
+    <div class="mb"><label>Guruh</label><input type="text" id="student-group" class="gi" style="width: 100%; border: none; outline: none; background: transparent; padding: 0;" placeholder="Guruh raqami" autocomplete="off" /></div>
+    <div class="mb"><label>Sana</label><input type="text" id="student-date" class="gi" readonly style="width: 100%; border: none; outline: none; background: transparent; padding: 0; color: var(--ink2)" /></div>
+  </div>
+</div>
+
+<div id="start-container" style="text-align: center; margin-top: 3rem; margin-bottom: 3rem; border: 1.5px solid var(--bo); padding: 2.5rem; border-radius: 12px; background: var(--sur); box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+  <h2 style="margin-bottom: 1.5rem; color: var(--ink); font-size: 18px; font-weight: 600;">Testni boshlash uchun ism, familiya va guruhni kiriting</h2>
+  <button class="bchk" id="btn-start" style="font-size: 15px; padding: 12px 32px;">Testni boshlash</button>
+  <p id="start-error" style="color: var(--ac); display: none; margin-top: 12px; font-weight: 500; font-size: 13.5px;">Iltimos, ism, familiya va guruhni to'ldiring.</p>
+</div>
+
+<div id="quiz-content" style="display: none; opacity: 0; transition: opacity 0.5s;">
+
+<div class="ban">
+  <span>Jami: <strong>80</strong> ball</span>
+  <span>Vaqt: <strong id="timer-display">55:00</strong></span>
+  <span>Bo'limlar: <strong>6 mavzu + 3 TMI</strong></span>
+</div>
+
+<!-- ══ MAVZU 1: Kimyoviy kanserogenez ══ -->
+<div class="tdiv"><span class="tnum">MAVZU 1</span><span class="ttitle">Kimyoviy kanserogenez</span></div>
+
+<div class="sec">
+  <div class="sh"><span class="sb bm">MCQ</span><span class="stitle">Ko'p tanlovli</span><span class="spts">4×1=4</span></div>
+
+  <div class="qb"><span class="qn">1.</span><div>
+    <div class="qt">Kimyoviy kanserogenezning initsiatsiya bosqichida nima sodir bo'ladi?</div>
+    <div class="opts">
+      <div class="opt" data-q="q1" data-v="A"><span class="ol">A</span>Hujayra tez bo'linishni boshlaydi</div>
+      <div class="opt" data-q="q1" data-v="B"><span class="ol">B</span>Karsinogen DNKga birikib qaytmas mutatsiya hosil qiladi</div>
+      <div class="opt" data-q="q1" data-v="C"><span class="ol">C</span>O'sma qon tomirlarini hosil qiladi</div>
+      <div class="opt" data-q="q1" data-v="D"><span class="ol">D</span>Metastaz yuzaga keladi</div>
+    </div>
+  </div></div>
+
+  <div class="qb"><span class="qn">2.</span><div>
+    <div class="qt">Prokansarogenlar qanday faollashadi?</div>
+    <div class="opts">
+      <div class="opt" data-q="q2" data-v="A"><span class="ol">A</span>Bevosita DNKga ta'sir qiladi</div>
+      <div class="opt" data-q="q2" data-v="B"><span class="ol">B</span>Jigar Sitoxrom P450 fermenti orqali metabolik aktivatsiyaga uchrab ultimate karsinogenlarga aylanadi</div>
+      <div class="opt" data-q="q2" data-v="C"><span class="ol">C</span>Immunologik mexanizm orqali faollashadi</div>
+      <div class="opt" data-q="q2" data-v="D"><span class="ol">D</span>Radikallarga aylanib RNKni shikastlaydi</div>
+    </div>
+  </div></div>
+
+  <div class="qb"><span class="qn">3.</span><div>
+    <div class="qt">Kimyoviy kanserogenezda "promotsiya" bosqichining asosiy xususiyati nima?</div>
+    <div class="opts">
+      <div class="opt" data-q="q3" data-v="A"><span class="ol">A</span>Qaytmas mutatsiya hosil bo'lishi</div>
+      <div class="opt" data-q="q3" data-v="B"><span class="ol">B</span>Mutatsiyasiz lekin initsiatsiyalangan hujayraning proliferatsiyasini rag'batlantirishi; qaytarsa bo'ladi</div>
+      <div class="opt" data-q="q3" data-v="C"><span class="ol">C</span>Metastaz bosqichi</div>
+      <div class="opt" data-q="q3" data-v="D"><span class="ol">D</span>Immunitet tizimini susaytiradi</div>
+    </div>
+  </div></div>
+
+  <div class="qb"><span class="qn">4.</span><div>
+    <div class="qt">Benz(a)piren qaysi organ tomonidan metabolizm qilinib mutagenik epoksidga aylanadi?</div>
+    <div class="opts">
+      <div class="opt" data-q="q4" data-v="A"><span class="ol">A</span>Buyrak</div>
+      <div class="opt" data-q="q4" data-v="B"><span class="ol">B</span>Jigar (CYP1A1/CYP1B1)</div>
+      <div class="opt" data-q="q4" data-v="C"><span class="ol">C</span>O'pka alveolotsitlari</div>
+      <div class="opt" data-q="q4" data-v="D"><span class="ol">D</span>Oshqozon</div>
+    </div>
+  </div></div>
+</div>
+
+<div class="sec">
+  <div class="sh"><span class="sb bf">To'ldirish</span><span class="stitle">Bo'shliqni to'ldiring</span><span class="spts">3×1=3</span></div>
+  <div class="qb"><span class="qn">5.</span>
+    <div class="qt">Kanserogenez uch bosqichdan iborat: initsiatsiya &rarr; <input class="gi" data-ans="promotsiya" placeholder="_________"> &rarr; progressiya.</div>
+  </div>
+  <div class="qb"><span class="qn">6.</span>
+    <div class="qt">Tamakidagi politsiklik aromatik uglevodorod &mdash; <input class="gi" data-ans="benz(a)piren" placeholder="_________"> &mdash; o'pka rakining asosiy kimyoviy omilidir.</div>
+  </div>
+  <div class="qb"><span class="qn">7.</span>
+    <div class="qt">Eymes testi &mdash; kimyoviy moddaning mutagen (karsinogen) xususiyatini aniqlash uchun <input class="gi" data-ans="salmonella" placeholder="_________"> bakteriyasida o'tkaziladigan test.</div>
+  </div>
+</div>
+
+<!-- ══ MAVZU 2: O'sma hujayralarning biokimyoviy xususiyatlari ══ -->
+<div class="tdiv"><span class="tnum">MAVZU 2</span><span class="ttitle">O'sma hujayralarning biokimyoviy xususiyatlari</span></div>
+
+<div class="sec">
+  <div class="sh"><span class="sb bm">MCQ</span><span class="stitle">Ko'p tanlovli</span><span class="spts">4×1=4</span></div>
+
+  <div class="qb"><span class="qn">8.</span><div>
+    <div class="qt">Varburg effekti deb nimaga aytiladi?</div>
+    <div class="opts">
+      <div class="opt" data-q="q8" data-v="A"><span class="ol">A</span>O'sma hujayralari mitoxondriyani yo'qotadi</div>
+      <div class="opt" data-q="q8" data-v="B"><span class="ol">B</span>O'sma hujayralari kislorod mavjud bo'lsa ham asosan aerob glikolizni afzal ko'radi va laktat ishlab chiqaradi</div>
+      <div class="opt" data-q="q8" data-v="C"><span class="ol">C</span>O'sma hujayralari yog' kislotalarni oksidlaydi</div>
+      <div class="opt" data-q="q8" data-v="D"><span class="ol">D</span>DNK sintezi to'xtaydi</div>
+    </div>
+  </div></div>
+
+  <div class="qb"><span class="qn">9.</span><div>
+    <div class="qt">O'sma hujayralarida qaysi ferment aktivligi oshib, telomerlar qisqarmasdan hujayra cheksiz bo'linishini ta'minlaydi?</div>
+    <div class="opts">
+      <div class="opt" data-q="q9" data-v="A"><span class="ol">A</span>DNK polimeraza-&alpha;</div>
+      <div class="opt" data-q="q9" data-v="B"><span class="ol">B</span>Telomeraza</div>
+      <div class="opt" data-q="q9" data-v="C"><span class="ol">C</span>Topoizomeraza</div>
+      <div class="opt" data-q="q9" data-v="D"><span class="ol">D</span>Lizozim</div>
+    </div>
+  </div></div>
+
+  <div class="qb"><span class="qn">10.</span><div>
+    <div class="qt">O'sma hujayralari qo'shni hujayralar bilan kontakt ingibitsiyasini yo'qotadi &mdash; bu nima degani?</div>
+    <div class="opts">
+      <div class="opt" data-q="q10" data-v="A"><span class="ol">A</span>Hujayralar bir-birini taniy olmaydi</div>
+      <div class="opt" data-q="q10" data-v="B"><span class="ol">B</span>Normal hujayralar bir-biriga tekkanda bo'linishni to'xtatadi, o'sma hujayralari esa to'xtatmaydi</div>
+      <div class="opt" data-q="q10" data-v="C"><span class="ol">C</span>Immunitet hujayralari ularga ta'sir qila olmaydi</div>
+      <div class="opt" data-q="q10" data-v="D"><span class="ol">D</span>Hujayra membranasi buziladi</div>
+    </div>
+  </div></div>
+
+  <div class="qb"><span class="qn">11.</span><div>
+    <div class="qt">O'sma hujayralarining farqlanish darajasi (differensiatsiya) qanday bo'ladi?</div>
+    <div class="opts">
+      <div class="opt" data-q="q11" data-v="A"><span class="ol">A</span>Yuqori differensialangan</div>
+      <div class="opt" data-q="q11" data-v="B"><span class="ol">B</span>Past differensialangan yoki dedifferensialangan (anaplaziya)</div>
+      <div class="opt" data-q="q11" data-v="C"><span class="ol">C</span>Normal hujayraga o'xshash</div>
+      <div class="opt" data-q="q11" data-v="D"><span class="ol">D</span>Differentsiatsiya buzilmaydi</div>
+    </div>
+  </div></div>
+</div>
+
+<div class="sec">
+  <div class="sh"><span class="sb bt">T/F</span><span class="stitle">To'g'ri / Noto'g'ri</span><span class="spts">3×1=3</span></div>
+  <div class="tfr"><span class="qn">12.</span>
+    <div class="qt">O'sma hujayralari ko'pincha o'sish omillariga (growth factors) javob bermaslik yoki o'zlarini o'sish omillari ishlab chiqarish xususiyatini kasb etadi (autokrin stimulyatsiya).</div>
+    <div class="tbs"><button class="tfb T" data-tf="12">T</button><button class="tfb F" data-tf="12">F</button></div>
+  </div>
+  <div class="tfr"><span class="qn">13.</span>
+    <div class="qt">Varburg effektida o'sma hujayralari kislorod bo'lmasa ham glikoliz qiladi &mdash; bu faqat anaerob sharoitga xos.</div>
+    <div class="tbs"><button class="tfb T" data-tf="13">T</button><button class="tfb F" data-tf="13">F</button></div>
+  </div>
+  <div class="tfr"><span class="qn">14.</span>
+    <div class="qt">O'sma hujayralari apoptoz signallariga rezistentlik kasb etadi va shu sababli ular yo'qolmay ko'payaveradi.</div>
+    <div class="tbs"><button class="tfb T" data-tf="14">T</button><button class="tfb F" data-tf="14">F</button></div>
+  </div>
+</div>
+
+<!-- ══ MAVZU 3: Onkogenlar, protoonkogenlar, supressor genlar ══ -->
+<div class="tdiv"><span class="tnum">MAVZU 3</span><span class="ttitle">Onkogenlar, protoonkogenlar va supressor genlar</span></div>
+
+<div class="sec">
+  <div class="sh"><span class="sb bm">MCQ</span><span class="stitle">Ko'p tanlovli</span><span class="spts">5×1=5</span></div>
+
+  <div class="qb"><span class="qn">15.</span><div>
+    <div class="qt">Protoonkogen nima?</div>
+    <div class="opts">
+      <div class="opt" data-q="q15" data-v="A"><span class="ol">A</span>O'smani bostirib turuvchi gen</div>
+      <div class="opt" data-q="q15" data-v="B"><span class="ol">B</span>Normal hujayra o'sishi va bo'linishini boshqaruvchi gen; mutatsiyaga uchrab onkogenge aylanishi mumkin</div>
+      <div class="opt" data-q="q15" data-v="C"><span class="ol">C</span>Viruslarda mavjud onkogen</div>
+      <div class="opt" data-q="q15" data-v="D"><span class="ol">D</span>Apoptoz geni</div>
+    </div>
+  </div></div>
+
+  <div class="qb"><span class="qn">16.</span><div>
+    <div class="qt">Ras onkogeni qanday mexanizm orqali faollashib qoladi?</div>
+    <div class="opts">
+      <div class="opt" data-q="q16" data-v="A"><span class="ol">A</span>Deletsiyadagi yo'qolishi</div>
+      <div class="opt" data-q="q16" data-v="B"><span class="ol">B</span>Nuqtaviy mutatsiya natijasida GTPaza faolligi yo'qoladi va Ras doimo faol holatda qoladi</div>
+      <div class="opt" data-q="q16" data-v="C"><span class="ol">C</span>Promotor methyllanishi</div>
+      <div class="opt" data-q="q16" data-v="D"><span class="ol">D</span>Transkripsiya ingibirlanadi</div>
+    </div>
+  </div></div>
+
+  <div class="qb"><span class="qn">17.</span><div>
+    <div class="qt">p53 oqsili "genom qo'riqchisi" deb atalishining asosiy sababi nima?</div>
+    <div class="opts">
+      <div class="opt" data-q="q17" data-v="A"><span class="ol">A</span>DNK replikatsiyasini bajaradi</div>
+      <div class="opt" data-q="q17" data-v="B"><span class="ol">B</span>DNK shikastlanganda hujayra siklini to'xtatadi yoki apoptoz yoqadi; mutatsiyasi ko'pgina o'smalarda uchraydi</div>
+      <div class="opt" data-q="q17" data-v="C"><span class="ol">C</span>Immunitet hujayralarini jalb qiladi</div>
+      <div class="opt" data-q="q17" data-v="D"><span class="ol">D</span>Onkogen sifatida ishlaydi</div>
+    </div>
+  </div></div>
+
+  <div class="qb"><span class="qn">18.</span><div>
+    <div class="qt">Retinoblastoma kasalligida qaysi tumor-supressor gen ikki alleli ham yo'qoladi (Knudson ikki zarba nazariyasi)?</div>
+    <div class="opts">
+      <div class="opt" data-q="q18" data-v="A"><span class="ol">A</span>BRCA1</div>
+      <div class="opt" data-q="q18" data-v="B"><span class="ol">B</span>RB1 (Retinoblastoma geni)</div>
+      <div class="opt" data-q="q18" data-v="C"><span class="ol">C</span>p53</div>
+      <div class="opt" data-q="q18" data-v="D"><span class="ol">D</span>APC</div>
+    </div>
+  </div></div>
+
+  <div class="qb"><span class="qn">19.</span><div>
+    <div class="qt">HER2/neu onkogenining amplifikatsiyasi qaysi o'sma turiga ko'proq xos?</div>
+    <div class="opts">
+      <div class="opt" data-q="q19" data-v="A"><span class="ol">A</span>O'pka raki</div>
+      <div class="opt" data-q="q19" data-v="B"><span class="ol">B</span>Ko'krak bezi raki</div>
+      <div class="opt" data-q="q19" data-v="C"><span class="ol">C</span>Buyrak raki</div>
+      <div class="opt" data-q="q19" data-v="D"><span class="ol">D</span>Prostata raki</div>
+    </div>
+  </div></div>
+</div>
+
+<div class="sec">
+  <div class="sh"><span class="sb bx">Moslashtirish</span><span class="stitle">Gen &rarr; funktsiya/kasallik</span><span class="spts">6×1=6</span></div>
+  <p class="hint">Onkogen yoki supressor gen bilan uning funktsiyasini moslashtiring.</p>
+  <div class="mg">
+    <div class="ml">RAS</div><div class="mc2">&rarr;</div>
+    <select class="ms" data-ma="g1" data-ans="C">
+      <option value="">&mdash; tanlang &mdash;</option>
+      <option value="A">A: Ko'krak bezi rakida amplifikatsiya</option>
+      <option value="B">B: Kolorektal rak, APC yo'lida ishtirok</option>
+      <option value="C">C: GTPaza &mdash; hujayra proliferatsiya signali; mutatsiyada doimo faol</option>
+      <option value="D">D: Hujayra sikli G1&rarr;S o'tishini boshqaradi; inaktivatsiyada rak</option>
+      <option value="E">E: DNK shikastida apoptoz va hujayra siklini to'xtatadi</option>
+      <option value="F">F: Leykemiyada BCR-ABL translokatsiyasi</option>
+    </select>
+
+    <div class="ml">p53</div><div class="mc2">&rarr;</div>
+    <select class="ms" data-ma="g2" data-ans="E">
+      <option value="">&mdash; tanlang &mdash;</option>
+      <option value="A">A: Ko'krak bezi rakida amplifikatsiya</option>
+      <option value="B">B: Kolorektal rak, APC yo'lida ishtirok</option>
+      <option value="C">C: GTPaza &mdash; hujayra proliferatsiya signali; mutatsiyada doimo faol</option>
+      <option value="D">D: Hujayra sikli G1&rarr;S o'tishini boshqaradi; inaktivatsiyada rak</option>
+      <option value="E">E: DNK shikastida apoptoz va hujayra siklini to'xtatadi</option>
+      <option value="F">F: Leykemiyada BCR-ABL translokatsiyasi</option>
+    </select>
+
+    <div class="ml">RB1</div><div class="mc2">&rarr;</div>
+    <select class="ms" data-ma="g3" data-ans="D">
+      <option value="">&mdash; tanlang &mdash;</option>
+      <option value="A">A: Ko'krak bezi rakida amplifikatsiya</option>
+      <option value="B">B: Kolorektal rak, APC yo'lida ishtirok</option>
+      <option value="C">C: GTPaza &mdash; hujayra proliferatsiya signali; mutatsiyada doimo faol</option>
+      <option value="D">D: Hujayra sikli G1&rarr;S o'tishini boshqaradi; inaktivatsiyada rak</option>
+      <option value="E">E: DNK shikastida apoptoz va hujayra siklini to'xtatadi</option>
+      <option value="F">F: Leykemiyada BCR-ABL translokatsiyasi</option>
+    </select>
+
+    <div class="ml">HER2/neu</div><div class="mc2">&rarr;</div>
+    <select class="ms" data-ma="g4" data-ans="A">
+      <option value="">&mdash; tanlang &mdash;</option>
+      <option value="A">A: Ko'krak bezi rakida amplifikatsiya</option>
+      <option value="B">B: Kolorektal rak, APC yo'lida ishtirok</option>
+      <option value="C">C: GTPaza &mdash; hujayra proliferatsiya signali; mutatsiyada doimo faol</option>
+      <option value="D">D: Hujayra sikli G1&rarr;S o'tishini boshqaradi; inaktivatsiyada rak</option>
+      <option value="E">E: DNK shikastida apoptoz va hujayra siklini to'xtatadi</option>
+      <option value="F">F: Leykemiyada BCR-ABL translokatsiyasi</option>
+    </select>
+
+    <div class="ml">APC</div><div class="mc2">&rarr;</div>
+    <select class="ms" data-ma="g5" data-ans="B">
+      <option value="">&mdash; tanlang &mdash;</option>
+      <option value="A">A: Ko'krak bezi rakida amplifikatsiya</option>
+      <option value="B">B: Kolorektal rak, APC yo'lida ishtirok</option>
+      <option value="C">C: GTPaza &mdash; hujayra proliferatsiya signali; mutatsiyada doimo faol</option>
+      <option value="D">D: Hujayra sikli G1&rarr;S o'tishini boshqaradi; inaktivatsiyada rak</option>
+      <option value="E">E: DNK shikastida apoptoz va hujayra siklini to'xtatadi</option>
+      <option value="F">F: Leykemiyada BCR-ABL translokatsiyasi</option>
+    </select>
+
+    <div class="ml">ABL</div><div class="mc2">&rarr;</div>
+    <select class="ms" data-ma="g6" data-ans="F">
+      <option value="">&mdash; tanlang &mdash;</option>
+      <option value="A">A: Ko'krak bezi rakida amplifikatsiya</option>
+      <option value="B">B: Kolorektal rak, APC yo'lida ishtirok</option>
+      <option value="C">C: GTPaza &mdash; hujayra proliferatsiya signali; mutatsiyada doimo faol</option>
+      <option value="D">D: Hujayra sikli G1&rarr;S o'tishini boshqaradi; inaktivatsiyada rak</option>
+      <option value="E">E: DNK shikastida apoptoz va hujayra siklini to'xtatadi</option>
+      <option value="F">F: Leykemiyada BCR-ABL translokatsiyasi</option>
+    </select>
+  </div>
+</div>
+
+<!-- ══ MAVZU 4: Neoplastik transformatsiya. Ko'p bosqichli kanserogenez ══ -->
+<div class="tdiv"><span class="tnum">MAVZU 4</span><span class="ttitle">Neoplastik transformatsiya. Kanserogenezning ko'p bosqichliligi</span></div>
+
+<div class="sec">
+  <div class="sh"><span class="sb bm">MCQ</span><span class="stitle">Ko'p tanlovli</span><span class="spts">3×1=3</span></div>
+
+  <div class="qb"><span class="qn">20.</span><div>
+    <div class="qt">Kolorektal rak rivojlanishining ko'p bosqichli modelida (Fearon-Vogelstein) qaysi gen birinchi mutatsiyalanadi?</div>
+    <div class="opts">
+      <div class="opt" data-q="q20" data-v="A"><span class="ol">A</span>p53</div>
+      <div class="opt" data-q="q20" data-v="B"><span class="ol">B</span>APC geni</div>
+      <div class="opt" data-q="q20" data-v="C"><span class="ol">C</span>RAS</div>
+      <div class="opt" data-q="q20" data-v="D"><span class="ol">D</span>SMAD4</div>
+    </div>
+  </div></div>
+
+  <div class="qb"><span class="qn">21.</span><div>
+    <div class="qt">Angiogenez (qon tomir hosil bo'lishi) o'smada qanday omil boshqaradi?</div>
+    <div class="opts">
+      <div class="opt" data-q="q21" data-v="A"><span class="ol">A</span>TNF-&alpha;</div>
+      <div class="opt" data-q="q21" data-v="B"><span class="ol">B</span>VEGF (Vascular Endothelial Growth Factor)</div>
+      <div class="opt" data-q="q21" data-v="C"><span class="ol">C</span>Insulin</div>
+      <div class="opt" data-q="q21" data-v="D"><span class="ol">D</span>Kortizol</div>
+    </div>
+  </div></div>
+
+  <div class="qb"><span class="qn">22.</span><div>
+    <div class="qt">Epitelial-mezenshimal o'tish (EMT) o'sma biologiyasida nima uchun muhim?</div>
+    <div class="opts">
+      <div class="opt" data-q="q22" data-v="A"><span class="ol">A</span>O'sma hujayralari energiya olishi uchun</div>
+      <div class="opt" data-q="q22" data-v="B"><span class="ol">B</span>Hujayralarga harakatchanlik va invaziya xususiyatini beradi, metastazga zamin yaratadi</div>
+      <div class="opt" data-q="q22" data-v="C"><span class="ol">C</span>Immunitet bostirish uchun</div>
+      <div class="opt" data-q="q22" data-v="D"><span class="ol">D</span>DNK reparatsiyasi uchun</div>
+    </div>
+  </div></div>
+</div>
+
+<div class="sec">
+  <div class="sh"><span class="sb bf">To'ldirish</span><span class="stitle">Bo'shliqni to'ldiring</span><span class="spts">3×1=3</span></div>
+  <div class="qb"><span class="qn">23.</span>
+    <div class="qt">Kolorektal rak rivojlanishi uchun odatda kamida <input class="gi" data-ans="4-5" placeholder="____"> ta gen mutatsiyasi to'planishi zarur (ko'p bosqichli kanserogenez).</div>
+  </div>
+  <div class="qb"><span class="qn">24.</span>
+    <div class="qt">Knudson nazariyasiga ko'ra tumor-supressor gen inaktivatsiyasi uchun ikkala <input class="gi" data-ans="allel" placeholder="_______"> ham yo'qolishi kerak ("ikki zarba").</div>
+  </div>
+  <div class="qb"><span class="qn">25.</span>
+    <div class="qt">O'sma hujayralarida E-<input class="gi" data-ans="kadherin" placeholder="_________"> oqsilining yo'qolishi hujayra-hujayra adhesiyasini buzib invaziyaga yo'l ochadi.</div>
+  </div>
+</div>
+
+<!-- ══ MAVZU 5: Invaziya va metastazlanish ══ -->
+<div class="tdiv"><span class="tnum">MAVZU 5</span><span class="ttitle">Invaziya va metastazlanish</span></div>
+
+<div class="sec">
+  <div class="sh"><span class="sb bm">MCQ</span><span class="stitle">Ko'p tanlovli</span><span class="spts">3×1=3</span></div>
+
+  <div class="qb"><span class="qn">26.</span><div>
+    <div class="qt">Metastaz bosqichlari to'g'ri ketma-ketlikda ko'rsatilgan qatorni toping:</div>
+    <div class="opts">
+      <div class="opt" data-q="q26" data-v="A"><span class="ol">A</span>Invaziya &rarr; qonga kirish &rarr; transport &rarr; o'rnashish &rarr; yangi o'sma</div>
+      <div class="opt" data-q="q26" data-v="B"><span class="ol">B</span>Angiogenez &rarr; apoptoz &rarr; invaziya</div>
+      <div class="opt" data-q="q26" data-v="C"><span class="ol">C</span>EMT &rarr; immunitet faollashuvi &rarr; o'sma</div>
+      <div class="opt" data-q="q26" data-v="D"><span class="ol">D</span>Mutatsiya &rarr; apoptoz &rarr; metastaz</div>
+    </div>
+  </div></div>
+
+  <div class="qb"><span class="qn">27.</span><div>
+    <div class="qt">Matrix metalloproteinazalar (MMPlar) metastazda qanday rol o'ynaydi?</div>
+    <div class="opts">
+      <div class="opt" data-q="q27" data-v="A"><span class="ol">A</span>DNK sintezini tezlashtiradi</div>
+      <div class="opt" data-q="q27" data-v="B"><span class="ol">B</span>Bazal membrana va ekstrasellyular matriksni parchalab o'sma hujayrasining invasiyasini osonlashtiradi</div>
+      <div class="opt" data-q="q27" data-v="C"><span class="ol">C</span>Immunitet hujayralarini jalb qiladi</div>
+      <div class="opt" data-q="q27" data-v="D"><span class="ol">D</span>Apoptoz hosil qiladi</div>
+    </div>
+  </div></div>
+
+  <div class="qb"><span class="qn">28.</span><div>
+    <div class="qt">Ko'krak bezi raki ko'pincha qaysi organlarga metastaz qiladi (eng xarakterli)?</div>
+    <div class="opts">
+      <div class="opt" data-q="q28" data-v="A"><span class="ol">A</span>Faqat o'pkaga</div>
+      <div class="opt" data-q="q28" data-v="B"><span class="ol">B</span>Suyak, o'pka, jigar, miya</div>
+      <div class="opt" data-q="q28" data-v="C"><span class="ol">C</span>Faqat buyrakka</div>
+      <div class="opt" data-q="q28" data-v="D"><span class="ol">D</span>Faqat limfa tugunlariga</div>
+    </div>
+  </div></div>
+</div>
+
+<div class="sec">
+  <div class="sh"><span class="sb bt">T/F</span><span class="stitle">To'g'ri / Noto'g'ri</span><span class="spts">3×1=3</span></div>
+  <div class="tfr"><span class="qn">29.</span>
+    <div class="qt">Metastaz jarayonida o'sma hujayralari qonga yoki limfaga tushib boshqa organlarga tarqaladi.</div>
+    <div class="tbs"><button class="tfb T" data-tf="29">T</button><button class="tfb F" data-tf="29">F</button></div>
+  </div>
+  <div class="tfr"><span class="qn">30.</span>
+    <div class="qt">Birlamchi o'sma har doim ikkilamchi o'smadan (metastazdan) kliniq jihatdan xavfliroq hisoblanadi.</div>
+    <div class="tbs"><button class="tfb T" data-tf="30">T</button><button class="tfb F" data-tf="30">F</button></div>
+  </div>
+  <div class="tfr"><span class="qn">31.</span>
+    <div class="qt">Angiogenez &mdash; o'sma 1&ndash;2 mm dan katta o'sishi uchun yangi qon tomirlari hosil qilishi zarur.</div>
+    <div class="tbs"><button class="tfb T" data-tf="31">T</button><button class="tfb F" data-tf="31">F</button></div>
+  </div>
+</div>
+
+<!-- ══ MAVZU 6: Tashhis va davolash ══ -->
+<div class="tdiv"><span class="tnum">MAVZU 6</span><span class="ttitle">O'sma kasalliklari tashhisi va davolashning asosiy tamoyillari</span></div>
+
+<div class="sec">
+  <div class="sh"><span class="sb bm">MCQ</span><span class="stitle">Ko'p tanlovli</span><span class="spts">4×1=4</span></div>
+
+  <div class="qb"><span class="qn">32.</span><div>
+    <div class="qt">PSA (Prostata Spetsifik Antigen) qaysi kasallikni skrininglash uchun ishlatiladi?</div>
+    <div class="opts">
+      <div class="opt" data-q="q32" data-v="A"><span class="ol">A</span>Ko'krak bezi raki</div>
+      <div class="opt" data-q="q32" data-v="B"><span class="ol">B</span>Prostata raki</div>
+      <div class="opt" data-q="q32" data-v="C"><span class="ol">C</span>O'pka raki</div>
+      <div class="opt" data-q="q32" data-v="D"><span class="ol">D</span>Jigar raki</div>
+    </div>
+  </div></div>
+
+  <div class="qb"><span class="qn">33.</span><div>
+    <div class="qt">Imatinib (Gleevec) qanday mexanizm bilan ishlaydi?</div>
+    <div class="opts">
+      <div class="opt" data-q="q33" data-v="A"><span class="ol">A</span>DNKni kesadi</div>
+      <div class="opt" data-q="q33" data-v="B"><span class="ol">B</span>BCR-ABL tirozin kinazasini selektiv ingibirlaydi &mdash; surunkali mieloid leykemiyada qo'llaniladi</div>
+      <div class="opt" data-q="q33" data-v="C"><span class="ol">C</span>Immunitetni kuchaytiradi</div>
+      <div class="opt" data-q="q33" data-v="D"><span class="ol">D</span>Angiogenezni faollashtiradi</div>
+    </div>
+  </div></div>
+
+  <div class="qb"><span class="qn">34.</span><div>
+    <div class="qt">Monoklon antitelolar asosidagi biologik terapiyaga misol:</div>
+    <div class="opts">
+      <div class="opt" data-q="q34" data-v="A"><span class="ol">A</span>Cisplatin</div>
+      <div class="opt" data-q="q34" data-v="B"><span class="ol">B</span>Trastuzumab (Herceptin) &mdash; HER2 ga qarshi</div>
+      <div class="opt" data-q="q34" data-v="C"><span class="ol">C</span>Paklitaksel</div>
+      <div class="opt" data-q="q34" data-v="D"><span class="ol">D</span>Metotreksat</div>
+    </div>
+  </div></div>
+
+  <div class="qb"><span class="qn">35.</span><div>
+    <div class="qt">AFP (alfa-fetoprotein) qaysi o'sma markeri sifatida ishlatiladi?</div>
+    <div class="opts">
+      <div class="opt" data-q="q35" data-v="A"><span class="ol">A</span>Kolorektal rak</div>
+      <div class="opt" data-q="q35" data-v="B"><span class="ol">B</span>Jigar raki (gepatosellyular karsinom) va germ hujayra o'smalari</div>
+      <div class="opt" data-q="q35" data-v="C"><span class="ol">C</span>Ko'krak bezi raki</div>
+      <div class="opt" data-q="q35" data-v="D"><span class="ol">D</span>O'pka raki</div>
+    </div>
+  </div></div>
+</div>
+
+<div class="sec">
+  <div class="sh"><span class="sb bs">Qisqa javob</span><span class="stitle">1&ndash;2 so'z</span><span class="spts">4×1.5=6</span></div>
+  <div class="qb"><span class="qn">36.</span><div>
+    <div class="qt">CA-125 markeri qaysi o'sma uchun ishlatiladi?</div>
+    <div class="ab"><span class="al2">Javob:</span><input class="ai" data-ans="tuxumdon raki" placeholder="yozing..."></div>
+  </div></div>
+  <div class="qb"><span class="qn">37.</span><div>
+    <div class="qt">Kemoterapiya hujayra siklining qaysi bosqichida ta'sir qiladi (ko'pchilik preparatlar)?</div>
+    <div class="ab"><span class="al2">Javob:</span><input class="ai" data-ans="s fazasi" placeholder="yozing..."></div>
+  </div></div>
+  <div class="qb"><span class="qn">38.</span><div>
+    <div class="qt">Immunoterapiyada PD-1/PD-L1 yo'lini bloklovchi preparatlar qanday ta'sir qiladi?</div>
+    <div class="ab"><span class="al2">Javob:</span><input class="ai" data-ans="t hujayra faollashtiradi" placeholder="yozing..."></div>
+  </div></div>
+  <div class="qb"><span class="qn">39.</span><div>
+    <div class="qt">O'sma markerlarining klinik qo'llanilishining asosiy 3 maqsadini ayting.</div>
+    <div class="ab"><span class="al2">Javob:</span><input class="ai" data-ans="skrining tashhis monitoring" placeholder="yozing..."></div>
+  </div></div>
+</div>
+
+<!-- ══ TMI 1 ══ -->
+<div class="tmi-div"><span class="tmi-badge">TMI 1</span><span class="ttitle">Tamakidagi benz(a)piren va o'pkada neoplastik jarayonlar</span></div>
+
+<div class="sec">
+  <div class="sh"><span class="sb bo2">MCQ + T/F</span><span class="stitle">Ko'p tanlovli va T/F</span><span class="spts">5×1=5</span></div>
+
+  <div class="qb"><span class="qn">40.</span><div>
+    <div class="qt">Benz(a)piren sitoxrom P450 (CYP1A1) ta'sirida qaysi mutagenik shaklga aylanadi?</div>
+    <div class="opts">
+      <div class="opt" data-q="q40" data-v="A"><span class="ol">A</span>Benzol</div>
+      <div class="opt" data-q="q40" data-v="B"><span class="ol">B</span>Benz(a)piren-7,8-diol-9,10-epoksid (BPDE) &mdash; DNKga addukt hosil qiladi</div>
+      <div class="opt" data-q="q40" data-v="C"><span class="ol">C</span>Naftalin</div>
+      <div class="opt" data-q="q40" data-v="D"><span class="ol">D</span>Xloroform</div>
+    </div>
+  </div></div>
+
+  <div class="qb"><span class="qn">41.</span><div>
+    <div class="qt">Benz(a)piren-DNK adduktlari ko'proq qaysi genning qaysi kodoni mutatsiyasiga sabab bo'ladi?</div>
+    <div class="opts">
+      <div class="opt" data-q="q41" data-v="A"><span class="ol">A</span>BRCA1 &mdash; 5-kodon</div>
+      <div class="opt" data-q="q41" data-v="B"><span class="ol">B</span>p53 &mdash; 157, 248, 273-kodonlar (hot spots)</div>
+      <div class="opt" data-q="q41" data-v="C"><span class="ol">C</span>RAS &mdash; 1-kodon</div>
+      <div class="opt" data-q="q41" data-v="D"><span class="ol">D</span>APC &mdash; 100-kodon</div>
+    </div>
+  </div></div>
+
+  <div class="tfr"><span class="qn">42.</span>
+    <div class="qt">CYP1A1 fermenti polimorfizmi tufayli ba'zi odamlarda benz(a)piren tezroq epoksidga aylanadi, bu esa o'pka rakiga sezgirlikni oshiradi.</div>
+    <div class="tbs"><button class="tfb T" data-tf="42">T</button><button class="tfb F" data-tf="42">F</button></div>
+  </div>
+  <div class="tfr"><span class="qn">43.</span>
+    <div class="qt">Tamakida benz(a)pirenden tashqari nitrozaminlar ham mavjud bo'lib ular ham prokansarogenlar hisoblanadi.</div>
+    <div class="tbs"><button class="tfb T" data-tf="43">T</button><button class="tfb F" data-tf="43">F</button></div>
+  </div>
+  <div class="tfr"><span class="qn">44.</span>
+    <div class="qt">Benz(a)piren faqat o'pkada metabolizm qilinadi va boshqa organlarga ta'sir qilmaydi.</div>
+    <div class="tbs"><button class="tfb T" data-tf="44">T</button><button class="tfb F" data-tf="44">F</button></div>
+  </div>
+</div>
+
+<!-- ══ TMI 2 ══ -->
+<div class="tmi-div"><span class="tmi-badge">TMI 2</span><span class="ttitle">O'sma hujayralarining kimyoviy dori vositalariga multirezistentligi</span></div>
+
+<div class="sec">
+  <div class="sh"><span class="sb bm">MCQ</span><span class="stitle">Ko'p tanlovli</span><span class="spts">4×1=4</span></div>
+
+  <div class="qb"><span class="qn">45.</span><div>
+    <div class="qt">MDR (Multi-Drug Resistance) mexanizmining asosiy molekulyar sababi nima?</div>
+    <div class="opts">
+      <div class="opt" data-q="q45" data-v="A"><span class="ol">A</span>DNK replikatsiyasi tezlashishi</div>
+      <div class="opt" data-q="q45" data-v="B"><span class="ol">B</span>P-glikoprotein (P-gp / MDR1) &mdash; ATP orqali dorini hujayradan chiqarib tashlovchi nasos</div>
+      <div class="opt" data-q="q45" data-v="C"><span class="ol">C</span>Apoptoz faollashuvi</div>
+      <div class="opt" data-q="q45" data-v="D"><span class="ol">D</span>Membrana o'tkazuvchanligining oshishi</div>
+    </div>
+  </div></div>
+
+  <div class="qb"><span class="qn">46.</span><div>
+    <div class="qt">GST (Glutation-S-transferaza) fermentining o'sma hujayralarida oshishi qanday rezistentlikka olib keladi?</div>
+    <div class="opts">
+      <div class="opt" data-q="q46" data-v="A"><span class="ol">A</span>Radiatsiyaga</div>
+      <div class="opt" data-q="q46" data-v="B"><span class="ol">B</span>Alkillovchi kimyoviy preparatlarga &mdash; glutation birikib ularni zararsizlantiradi</div>
+      <div class="opt" data-q="q46" data-v="C"><span class="ol">C</span>Immunoterapiyaga</div>
+      <div class="opt" data-q="q46" data-v="D"><span class="ol">D</span>Gormonal terapiyaga</div>
+    </div>
+  </div></div>
+
+  <div class="qb"><span class="qn">47.</span><div>
+    <div class="qt">Topoisomeraza II mutatsiyasi qaysi dori sinfiga rezistentlik beradi?</div>
+    <div class="opts">
+      <div class="opt" data-q="q47" data-v="A"><span class="ol">A</span>Antimetabolitlar (metotreksat)</div>
+      <div class="opt" data-q="q47" data-v="B"><span class="ol">B</span>Antratsiklin antibiotiklar (doksorubitsin, etoposid)</div>
+      <div class="opt" data-q="q47" data-v="C"><span class="ol">C</span>Vinka alkaloidi</div>
+      <div class="opt" data-q="q47" data-v="D"><span class="ol">D</span>Taxanlar</div>
+    </div>
+  </div></div>
+
+  <div class="qb"><span class="qn">48.</span><div>
+    <div class="qt">Multirezistentlikni engish uchun qanday strategiya qo'llaniladi?</div>
+    <div class="opts">
+      <div class="opt" data-q="q48" data-v="A"><span class="ol">A</span>Faqat bitta dori dozasini oshirish</div>
+      <div class="opt" data-q="q48" data-v="B"><span class="ol">B</span>Kombinatsiyalangan kimyoterapiya, P-gp ingibitorlari va yangi maqsadli terapiya</div>
+      <div class="opt" data-q="q48" data-v="C"><span class="ol">C</span>Faqat jarrohlik</div>
+      <div class="opt" data-q="q48" data-v="D"><span class="ol">D</span>Dorini to'xtatish</div>
+    </div>
+  </div></div>
+</div>
+
+<!-- ══ TMI 3 ══ -->
+<div class="tmi-div"><span class="tmi-badge">TMI 3</span><span class="ttitle">Sitoxrom P450 polimorfizmi va kimyoviy kanserogenez</span></div>
+
+<div class="sec">
+  <div class="sh"><span class="sb bm">MCQ</span><span class="stitle">Ko'p tanlovli</span><span class="spts">3×1=3</span></div>
+
+  <div class="qb"><span class="qn">49.</span><div>
+    <div class="qt">CYP2D6 fermenti polimorfizmi bilan bog'liq "sekin metabolizatorlar" (poor metabolizers) dori toksikligiga ko'proq duchor bo'ladi &mdash; bu nima uchun?</div>
+    <div class="opts">
+      <div class="opt" data-q="q49" data-v="A"><span class="ol">A</span>Dorini tezroq parchalaydi</div>
+      <div class="opt" data-q="q49" data-v="B"><span class="ol">B</span>Dori to'liq metabolizm qilinmasdan qonda to'planadi va toksisite oshadi</div>
+      <div class="opt" data-q="q49" data-v="C"><span class="ol">C</span>Immun reaktsiya kuchayadi</div>
+      <div class="opt" data-q="q49" data-v="D"><span class="ol">D</span>Karsinogen faollanmaydi</div>
+    </div>
+  </div></div>
+
+  <div class="qb"><span class="qn">50.</span><div>
+    <div class="qt">CYP1B1 fermenti qaysi to'qimalarda ko'p ekspressiya qiladi va kanserogenezda qanday ahamiyatga ega?</div>
+    <div class="opts">
+      <div class="opt" data-q="q50" data-v="A"><span class="ol">A</span>Faqat jigarda; karsinogenlarni parchalaydi</div>
+      <div class="opt" data-q="q50" data-v="B"><span class="ol">B</span>Ko'krak bezi, o'pka kabi tashqi to'qimalarda; prokansarogenlarni faollantirib o'sha joyda o'sma chaqiradi</div>
+      <div class="opt" data-q="q50" data-v="C"><span class="ol">C</span>Faqat miyada</div>
+      <div class="opt" data-q="q50" data-v="D"><span class="ol">D</span>Immunitet organlarida</div>
+    </div>
+  </div></div>
+
+  <div class="qb"><span class="qn">51.</span><div>
+    <div class="qt">Farmakogenomika sohasida CYP polimorfizmini o'rganishning tibbiy ahamiyati nima?</div>
+    <div class="opts">
+      <div class="opt" data-q="q51" data-v="A"><span class="ol">A</span>Faqat ilmiy tadqiqot uchun</div>
+      <div class="opt" data-q="q51" data-v="B"><span class="ol">B</span>Individual dori dozasini aniqlash, yon ta'sirlarni oldindan bashorat qilish va kanserogenez xavfini baholash</div>
+      <div class="opt" data-q="q51" data-v="C"><span class="ol">C</span>Faqat rak diagnostikasi uchun</div>
+      <div class="opt" data-q="q51" data-v="D"><span class="ol">D</span>Gen terapiyasi uchun</div>
+    </div>
+  </div></div>
+</div>
+
+<div class="sec">
+  <div class="sh"><span class="sb bt">T/F</span><span class="stitle">To'g'ri / Noto'g'ri</span><span class="spts">3×1=3</span></div>
+  <div class="tfr"><span class="qn">52.</span>
+    <div class="qt">CYP1A2 va CYP3A4 &mdash; jigar sitoxromlarining eng ko'p ekspressiyalangan izoformalari bo'lib, dorilarning 90% ni metabolizm qiladi.</div>
+    <div class="tbs"><button class="tfb T" data-tf="52">T</button><button class="tfb F" data-tf="52">F</button></div>
+  </div>
+  <div class="tfr"><span class="qn">53.</span>
+    <div class="qt">Ultra-tez metabolizatorlarda (CYP2D6 duplikatsiyasi) dori tez parchalanadi, shuning uchun standart dozada terapevtik effekt pastroq bo'lishi mumkin.</div>
+    <div class="tbs"><button class="tfb T" data-tf="53">T</button><button class="tfb F" data-tf="53">F</button></div>
+  </div>
+  <div class="tfr"><span class="qn">54.</span>
+    <div class="qt">P450 fermentlari faqat dorilarni parchalaydi, endogen moddalar (steroidlar, yog' kislotalari) bilan ishi yo'q.</div>
+    <div class="tbs"><button class="tfb T" data-tf="54">T</button><button class="tfb F" data-tf="54">F</button></div>
+  </div>
+</div>
+
+<!-- ACTION -->
+<div class="acbar">
+  <button class="bchk" onclick="checkAll()">✓ Javoblarni tekshirish</button>
+  <button class="brst" onclick="resetAll()">↺ Qayta boshlash</button>
+</div>
+<div class="rcard" id="rc">
+  <div style="display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;">
+    <span class="rscore" id="sd"></span>
+    <span class="rdet" id="sp"></span>
+  </div>
+  <div class="rdet" id="sb" style="margin-top:6px;font-size:13px;line-height:1.8"></div>
+</div>
+
+</div>
+</div>
+
+<script>
+const MCQA={q1:'B',q2:'B',q3:'B',q4:'B',q8:'B',q9:'B',q10:'B',q11:'B',q15:'B',q16:'B',q17:'B',q18:'B',q19:'B',q20:'B',q21:'B',q22:'B',q26:'A',q27:'B',q28:'B',q32:'B',q33:'B',q34:'B',q35:'B',q40:'B',q41:'B',q45:'B',q46:'B',q47:'B',q48:'B',q49:'B',q50:'B',q51:'B'};
+const TFA={12:true,13:false,14:true,29:true,30:false,31:true,38:true,42:true,43:true,44:false,52:true,53:true,54:false};
+const GAPA=['promotsiya','benz(a)piren','salmonella','4-5','allel','kadherin'];
+const SHORTA=['tuxumdon','s fazasi','t hujayra','skrining tashhis monitoring'];
+const MATCHA={g1:'C',g2:'E',g3:'D',g4:'A',g5:'B',g6:'F'};
+
+// Start mechanism
+document.getElementById('student-date').value = new Date().toLocaleDateString('uz-UZ', { year: 'numeric', month: '2-digit', day: '2-digit' });
+
+let timerInterval;
+
+document.getElementById('btn-start').addEventListener('click', () => {
+  const iName = document.getElementById('student-name');
+  const iGroup = document.getElementById('student-group');
+  const err = document.getElementById('start-error');
+
+  if (!iName.value.trim() || !iGroup.value.trim()) {
+    err.style.display = 'block';
+    return;
+  }
+  err.style.display = 'none';
+
+  iName.setAttribute('readonly', 'true');
+  iGroup.setAttribute('readonly', 'true');
+
+  document.getElementById('start-container').style.display = 'none';
+  const content = document.getElementById('quiz-content');
+  content.style.display = 'block';
+  setTimeout(() => { content.style.opacity = '1'; }, 50);
+
+  startQuiz();
+});
+
+function startQuiz() {
+  let timeLeft = 55 * 60; // 55 minutes
+  timerInterval = setInterval(() => {
+    if(timeLeft <= 0) {
+      clearInterval(timerInterval);
+      document.getElementById('timer-display').textContent = "00:00";
+      alert("Vaqt tugadi! Javoblaringiz avtomatik tekshiriladi.");
+      checkAll();
+      return;
+    }
+    timeLeft--;
+    const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+    const s = (timeLeft % 60).toString().padStart(2, '0');
+    document.getElementById('timer-display').textContent = `${m}:${s}`;
+    if(timeLeft <= 300) { 
+      document.getElementById('timer-display').style.color = 'var(--ac)';
+    }
+  }, 1000);
+}
+
+
+let mSel={},tSel={};
+document.querySelectorAll('.opt').forEach(o=>{
+  o.addEventListener('click',()=>{
+    const q=o.dataset.q;
+    document.querySelectorAll(`.opt[data-q="${q}"]`).forEach(x=>x.classList.remove('sel'));
+    o.classList.add('sel'); mSel[q]=o.dataset.v;
+  });
+});
+document.querySelectorAll('.tfb').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const q=b.dataset.tf;
+    document.querySelectorAll(`.tfb[data-tf="${q}"]`).forEach(x=>x.classList.remove('active'));
+    b.classList.add('active'); tSel[q]=b.classList.contains('T');
+  });
+});
+
+function n(s){return(s||'').trim().toLowerCase().replace(/[-_]/g,' ')}
+function hit(g,e){const gn=n(g),en=n(e);return gn&&(gn===en||gn.includes(en.split(' ')[0])||en.includes(gn.split(' ')[0]))}
+
+function checkAll(){
+  let mS=0,tS=0,fS=0,sS=0,xS=0;
+  clearInterval(timerInterval);
+
+  document.querySelectorAll('.opt').forEach(o=>o.classList.remove('ok','no'));
+  Object.entries(MCQA).forEach(([q,ans])=>{
+    const sel=mSel[q];
+    document.querySelectorAll(`.opt[data-q="${q}"]`).forEach(o=>{
+      if(o.dataset.v===ans) o.classList.add('ok');
+      else if(o.dataset.v===sel&&sel!==ans) o.classList.add('no');
+    });
+    if(sel===ans) mS++;
+  });
+
+  document.querySelectorAll('.tfb').forEach(b=>b.classList.remove('correct','wrong'));
+  Object.entries(TFA).forEach(([q,ans])=>{
+    const sel=tSel[q];
+    if(sel===undefined) return;
+    document.querySelectorAll(`.tfb[data-tf="${q}"]`).forEach(b=>{
+      if((b.classList.contains('T')&&ans)||(b.classList.contains('F')&&!ans)) b.classList.add('correct');
+      if(b.classList.contains('active')&&sel!==ans) b.classList.add('wrong');
+    });
+    if(sel===ans) tS++;
+  });
+
+  document.querySelectorAll('.gi').forEach((inp,i)=>{
+    inp.classList.remove('ok','no');
+    if(hit(inp.value,GAPA[i]||'')){inp.classList.add('ok');fS++;}
+    else if(inp.value.trim()) inp.classList.add('no');
+  });
+
+  document.querySelectorAll('.ai').forEach((inp,i)=>{
+    inp.classList.remove('ok','no');
+    if(hit(inp.value,SHORTA[i]||'')){inp.classList.add('ok');sS+=1.5;}
+    else if(inp.value.trim()) inp.classList.add('no');
+  });
+
+  document.querySelectorAll('.ms').forEach(s=>{
+    s.classList.remove('ok','no');
+    if(!s.value) return;
+    if(s.value===MATCHA[s.dataset.ma]){s.classList.add('ok');xS++;}
+    else s.classList.add('no');
+  });
+
+  const tot=mS+tS+fS+sS+xS;
+  const pct=Math.round(tot/80*100);
+  const gr=pct>=90?"A'lo":pct>=75?"Yaxshi":pct>=60?"Qoniqarli":"Qayta o'rganing";
+
+  const rc=document.getElementById('rc');
+  rc.classList.add('vis');
+  document.getElementById('sd').textContent=`${tot.toFixed(1)} / 80 ball`;
+  document.getElementById('sp').textContent=`${pct}% &mdash; ${gr}`;
+  document.getElementById('sb').innerHTML=
+    `A: ${mS}/${Object.keys(MCQA).length} &nbsp;&middot;&nbsp; B: ${tS}/${Object.keys(TFA).length} &nbsp;&middot;&nbsp; C: ${fS}/6 &nbsp;&middot;&nbsp; D: ${sS.toFixed(1)}/6 &nbsp;&middot;&nbsp; E: ${xS}/6`;
+  rc.scrollIntoView({behavior:'smooth',block:'nearest'});
+  
+  if (window.parent) {
+    window.parent.postMessage({
+        type: 'WORKSHEET_COMPLETED',
+        scorePct: pct,
+        scoreTotal: tot,
+        maxScore: 80
+    }, '*');
+  }
+}
+
+function resetAll(){
+  mSel={}; tSel={};
+  document.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel','ok','no'));
+  document.querySelectorAll('.gi,.ai').forEach(i=>{i.value='';i.classList.remove('ok','no');});
+  document.querySelectorAll('.tfb').forEach(b=>b.classList.remove('active','correct','wrong'));
+  document.querySelectorAll('.ms').forEach(s=>{s.value='';s.classList.remove('ok','no');});
+  document.getElementById('rc').classList.remove('vis');
+  
+  document.getElementById('student-name').removeAttribute('readonly');
+  document.getElementById('student-group').removeAttribute('readonly');
+  document.getElementById('start-container').style.display = 'block';
+  document.getElementById('quiz-content').style.display = 'none';
+  document.getElementById('quiz-content').style.opacity = '0';
+  document.getElementById('timer-display').textContent = '55:00';
+}
+</script>
+</body>
+</html>
