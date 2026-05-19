@@ -4,14 +4,24 @@ import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
 import OpenAI from "openai";
 
-const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY,
-  httpOptions: {
-    headers: {
-      'User-Agent': 'aistudio-build',
+let aiClient: GoogleGenAI | null = null;
+function getAI() {
+  if (!aiClient) {
+    const key = process.env.GEMINI_API_KEY;
+    if (!key) {
+      throw new Error("GEMINI_API_KEY yoxud OPENAI_API_KEY Vercel Environment Variables da kiritilmagan. Iltimos Verceldan sozlamalarga kirib API Key larni qoshing.");
     }
+    aiClient = new GoogleGenAI({
+      apiKey: key,
+      httpOptions: {
+        headers: {
+          'User-Agent': 'aistudio-build',
+        }
+      }
+    });
   }
-});
+  return aiClient;
+}
 
 async function startServer() {
   const app = express();
@@ -76,7 +86,7 @@ async function startServer() {
         return;
       }
 
-      const response = await ai.models.generateContent({
+      const response = await getAI().models.generateContent({
         model,
         contents: prompt,
         config

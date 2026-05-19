@@ -2,6 +2,15 @@ import { GoogleGenAI } from "@google/genai";
 import OpenAI from "openai";
 
 export default async function handler(req, res) {
+  // Add CORS headers for Vercel
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, x-openai-key');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
@@ -49,8 +58,13 @@ export default async function handler(req, res) {
       return;
     }
 
+    const geminiKey = process.env.GEMINI_API_KEY;
+    if (!geminiKey) {
+      return res.status(500).json({ error: 'GEMINI_API_KEY yoxud OPENAI_API_KEY Vercel Environment Variables da kiritilmagan. Iltimos Verceldan sozlamalarga kirib API Key larni qoshing.' });
+    }
+
     const ai = new GoogleGenAI({
-      apiKey: process.env.GEMINI_API_KEY,
+      apiKey: geminiKey,
     });
 
     const response = await ai.models.generateContent({
