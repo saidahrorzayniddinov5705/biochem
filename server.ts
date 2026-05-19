@@ -17,23 +17,26 @@ async function startServer() {
   const app = express();
   const PORT = 3000;
 
-  app.use(express.json());
+  app.use(express.json({ limit: '10mb' }));
 
   // API constraints
   app.post("/api/ai", async (req, res) => {
     try {
       const { prompt, model = 'gemini-2.0-flash', config } = req.body;
-      let customOpenAiKey = req.headers['x-openai-key'] || process.env.OPENAAI || process.env.openaai || process.env.OPENAI_API_KEY;
+      let customOpenAiKey = (req.headers['x-openai-key'] as string) || process.env.OPENAI_API_KEY || process.env.OpenAI || process.env.OPENAI_KEY || '';
       
       if (!customOpenAiKey || customOpenAiKey === 'null' || customOpenAiKey === 'undefined') {
-        // Iterate over all env vars to find anything resembling openaai or matching sk- prefix
         for (const [k, v] of Object.entries(process.env)) {
            const lowerKey = k.toLowerCase();
-           if (lowerKey === 'openai_api_key' || lowerKey.includes('openaai') || lowerKey === 'openai' || (typeof v === 'string' && v.startsWith('sk-'))) {
+           if (lowerKey === 'openai_api_key' || lowerKey === 'openai' || lowerKey === 'openai_key') {
                customOpenAiKey = v as string;
                break;
            }
         }
+      }
+
+      if (typeof customOpenAiKey === 'string') {
+        customOpenAiKey = customOpenAiKey.trim();
       }
 
       if (customOpenAiKey && typeof customOpenAiKey === 'string' && customOpenAiKey.length > 5) {

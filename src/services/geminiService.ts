@@ -51,12 +51,24 @@ Both properties should be plain strings. Do NOT output a raw array. Output an ob
 
     const text = await callAI(prompt, { responseMimeType: "application/json" });
     if (text) {
-      let parsed = JSON.parse(text);
-      if (parsed.cards && Array.isArray(parsed.cards)) {
-         return parsed.cards;
+      let cleanedText = text.trim();
+      if (cleanedText.startsWith('```json')) {
+         cleanedText = cleanedText.slice(7);
+      } else if (cleanedText.startsWith('```')) {
+         cleanedText = cleanedText.slice(3);
       }
-      if (Array.isArray(parsed)) {
-         return parsed;
+      if (cleanedText.endsWith('```')) {
+         cleanedText = cleanedText.slice(0, -3);
+      }
+      cleanedText = cleanedText.trim();
+
+      let parsed = JSON.parse(cleanedText);
+      let cardsArray = parsed.cards || parsed.flashcards || parsed;
+      if (Array.isArray(cardsArray)) {
+         return cardsArray.map((c: any) => ({
+             front: c.front || c.question || c.q || '',
+             back: c.back || c.answer || c.a || ''
+         }));
       }
       return [];
     }
